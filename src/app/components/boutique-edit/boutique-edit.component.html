@@ -1,0 +1,23 @@
+<div class="container wrapper wrapper2">
+    <div class="row">
+        <!-- Form -->
+        <div class="col-md-12">
+            <h3>Modification d'une boutique</h3>
+            <form [formGroup]="updateBoutiqueForm" (ngSubmit)="submitForm()" novalidate>
+                <div class="form-group">
+                    <label>Nom de la boutique</label>
+                    <input type="text" formControlName="nom" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Horaires de la boutique</label>
+                    <input type="text" formControlName="horaires" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Congé de la boutique</label>
+                    <input type="checkbox" formControlName="conge" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="container wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header">
+                <button type="button" class="btn btn-primary-outline pull-right" (click)="goToAdd();"><i class="fa fa-plus"></i>Ajouter une boutique</button>    
+            </div>
+            <div class="inner">
+                <h3>Mes boutiques</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Boutique</th>
+                            <th scope="col">Horaires</th>
+                            <th scope="col">Conge</th>
+                            <th scope="col">Date de création</th>
+                            <th scope="col">Nombre de catégories</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let boutique of boutiqueList">
+                            <th scope="row">{{boutique.id}}</th>
+                            <td>{{boutique.nom}}</td>
+                            <td>{{boutique.horaires}}</td>
+                            <td>{{boutique.conge}}</td>
+                            <td>{{boutique.dateCreation}}</td>
+                            <td>{{boutique.nbCategories}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/boutique/edit', boutique.id]">Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="deleteBoutique(boutique)">Supprimer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
