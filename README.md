@@ -1,5 +1,11 @@
 # ShopManager
 
+endspoints : /boutique/all
+             /boutique/add
+             /boutique/edit/1
+             /boutique/delete/1
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.9.
 
 ## Development server
