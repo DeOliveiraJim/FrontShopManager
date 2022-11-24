@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Boutique } from './shared/boutique';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BoutiqueService {
 
    // Base url
-   baseurl = 'http://localhost:8080';
+   baseurl = environment.baseurl;
    constructor(private http: HttpClient) {}
    // Http Headers
    httpOptions = {
@@ -25,19 +26,19 @@ export class BoutiqueService {
          JSON.stringify(data),
          this.httpOptions
        )
-       .pipe(retry(1), catchError(this.errorHandl));
+       .pipe(retry(1), catchError(this.errorHandler));
    }
    // GET
    GetBoutique(id: string): Observable<Boutique> {
      return this.http
        .get<Boutique>(this.baseurl + '/boutique/' + id)
-       .pipe(retry(1), catchError(this.errorHandl));
+       .pipe(retry(1), catchError(this.errorHandler));
    }
    // GET
    GetBoutiques(): Observable<Boutique> {
      return this.http
        .get<Boutique>(this.baseurl + '/boutique')
-       .pipe(retry(1), catchError(this.errorHandl));
+       .pipe(retry(1), catchError(this.errorHandler));
    }
    // PATCH
    UpdateBoutique(id: string, data: any): Observable<Boutique> {
@@ -47,16 +48,16 @@ export class BoutiqueService {
          JSON.stringify(data),
          this.httpOptions
        )
-       .pipe(retry(1), catchError(this.errorHandl));
+       .pipe(retry(1), catchError(this.errorHandler));
    }
    // DELETE
    DeleteBoutique(id: string) {
      return this.http
        .delete<Boutique>(this.baseurl + '/boutique/' + id, this.httpOptions)
-       .pipe(retry(1), catchError(this.errorHandl));
+       .pipe(retry(1), catchError(this.errorHandler));
    }
    // Error handling
-   errorHandl(error: { error: { message: string; }; status: any; message: any; }) {
+   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
      let errorMessage = '';
      if (error.error instanceof ErrorEvent) {
        // Get client-side error

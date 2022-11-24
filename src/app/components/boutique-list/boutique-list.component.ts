@@ -41,8 +41,7 @@ export class BoutiqueListComponent implements OnInit {
        })    
     }
 
-    sortData(sortingBy : string) {
-      
+    sortData(sortingBy : string) {     
 
       if(sortingBy == "Nom") {
 

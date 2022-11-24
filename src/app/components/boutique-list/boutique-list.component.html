@@ -46,6 +46,7 @@
                                 <td>
                                     <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/boutique/edit', boutique.id]">Edit</button>
                                     <button type="button" class="btn btn-danger btn-sm" (click)="deleteBoutique(boutique)">Supprimer</button>
+                                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/boutique/'+ boutique.id + '/produits/all']">Produits</button>
                                 </td>
                             </tr>
                         </tbody>

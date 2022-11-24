@@ -11,6 +11,8 @@ import { BoutiqueService } from './boutique.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
+import { ProduitListComponent } from './components/produit-list/produit-list.component';
+import { ProduitEditComponent } from './components/produit-edit/produit-edit.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { NavigationBarComponent } from './components/navigation-bar/navigation-b
     BoutiqueEditComponent,
     BoutiqueListComponent,
     AppComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    ProduitListComponent,
+    ProduitEditComponent
   ],
   imports : [
     RouterModule,
