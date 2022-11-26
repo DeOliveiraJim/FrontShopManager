@@ -1,0 +1,52 @@
+
+<div class="container wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header">
+                
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                      Tri
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
+                    </ul>
+                  </div>
+
+            </div>
+            <div class="inner">
+
+                <div >
+                    <div class="border my-3"
+                      *ngFor="
+                        let category of categoryList | paginate: { itemsPerPage: 6, currentPage: pages }
+                      "
+                    >
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Categorie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">{{category.id}}</th>
+                                <td>{{category.nom}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/category/edit', category.id]">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category)">Supprimer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                    </div>
+                  </div>
+                  
+                  <pagination-controls (pageChange)="pages = $event"></pagination-controls>
+                  
+              
+            </div>
+        </div>
+    </div>
+</div>

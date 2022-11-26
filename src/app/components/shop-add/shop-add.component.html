@@ -1,0 +1,26 @@
+
+<div class="container wrapper wrapper2">
+    <div class="row">
+        <!-- Form -->
+        <div class="col-md-12">
+            <h3>Ajout d'une boutique</h3>
+            <form [formGroup]="shopForm" (ngSubmit)="submitForm()" novalidate>
+                <div class="form-group">
+                    <label>Nom de la boutique</label>
+                    <input type="text" formControlName="nom" class="form-control" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>Horaires de la boutique</label>
+                    <input type="text" formControlName="horaires">
+                </div>
+                <div class="form-group">
+                    <label>Congé de la boutique</label>
+                    <input type="checkbox" formControlName="conge">
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
