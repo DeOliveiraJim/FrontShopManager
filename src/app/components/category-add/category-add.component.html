@@ -1,0 +1,18 @@
+
+<div class="container wrapper wrapper2">
+    <div class="row">
+        <!-- Form -->
+        <div class="col-md-12">
+            <h3>Ajout d'une catégorie</h3>
+            <form [formGroup]="categoryForm" (ngSubmit)="submitForm()" novalidate>
+                <div class="form-group">
+                    <label>Nom de la catégorie</label>
+                    <input type="text" formControlName="name" class="form-control" maxlength="20">
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -15,11 +15,11 @@ export class NavigationBarComponent implements OnInit {
   }
 
   goToAdd() {
-    this.router.navigateByUrl('/boutique/add');
+    this.router.navigateByUrl('/shops/add');
   }
 
   goToHome() {
-    this.router.navigateByUrl('/boutique');
+    this.router.navigateByUrl('/shop');
   }
 
 }

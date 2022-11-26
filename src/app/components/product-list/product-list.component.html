@@ -1,0 +1,60 @@
+
+<div class="container wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header">
+                <div>
+                <button class="btn btn-primary btn-sm" type="button" (click)="redirectAddProduct()">Ajout d'un product</button>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tri
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
+                  <li><button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button></li>
+                </ul>
+              </div>
+
+            <div class="inner">
+
+                <div >
+                    <div class="border my-3"
+                      *ngFor="
+                        let product of productList | paginate: { itemsPerPage: 10, currentPage: pages }
+                      "
+                    >
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">product</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">{{product.id}}</th>
+                                <td>{{product.name}}</td>
+                                <td>{{product.price}}</td>
+                                <td>{{product.description}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm move-right" (click)="redirectEditProduct(product)">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteProduct(product)">Supprimer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                    </div>
+                  </div>
+                  
+                  <pagination-controls (pageChange)="pages = $event"></pagination-controls>
+                  
+              
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                       <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
+                      <li><button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button></li>
                     </ul>
                   </div>
 
@@ -19,23 +20,33 @@
                 <div >
                     <div class="border my-3"
                       *ngFor="
-                        let category of categoryList | paginate: { itemsPerPage: 6, currentPage: pages }
+                        let shop of shopList | paginate: { itemsPerPage: 2, currentPage: pages }
                       "
                     >
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Categorie</th>
+                                <th scope="col">Shop</th>
+                                <th scope="col">Horaires</th>
+                                <th scope="col">Conge</th>
+                                <th scope="col">Date de création</th>
+                                <th scope="col">Nombre de catégories</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">{{category.id}}</th>
-                                <td>{{category.name}}</td>
+                                <th scope="row">{{shop.id}}</th>
+                                <td>{{shop.name}}</td>
+                                <td>{{shop.openingTime}}</td>
+                                <td *ngIf="shop.vacation">Oui</td>
+                                <td *ngIf="!shop.vacation">Non</td>
+                                <td>{{shop.dateCreation}}</td>
+                                <td>{{shop.nbCategorys}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/category/edit', category.id]">Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category)">Supprimer</button>
+                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/shops/edit', shop.id]">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteShop(shop)">Supprimer</button>
+                                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/shops/'+ shop.id + '/products/']">Products</button>
                                 </td>
                             </tr>
                         </tbody>

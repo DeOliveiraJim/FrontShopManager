@@ -3,37 +3,45 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BoutiqueAddComponent } from './components/boutique-add/boutique-add.component';
-import { BoutiqueEditComponent } from './components/boutique-edit/boutique-edit.component';
-import { BoutiqueListComponent } from './components/boutique-list/boutique-list.component';
+import { ShopAddComponent } from './components/shop-add/shop-add.component';
+import { ShopEditComponent } from './components/shop-edit/shop-edit.component';
+import { ShopListComponent } from './components/shop-list/shop-list.component';
 import { RouterModule } from '@angular/router';
-import { BoutiqueService } from './boutique.service';
+import { ShopService } from './services/shop.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
-import { ProduitListComponent } from './components/produit-list/produit-list.component';
-import { ProduitEditComponent } from './components/produit-edit/produit-edit.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductEditComponent } from './components/product-edit/product-edit.component';
+import { ProductAddComponent } from './components/product-add/product-add.component';
+import { CategoryAddComponent } from './components/category-add/category-add.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
+import { CategoryEditComponent } from './components/category-edit/category-edit.component';
 
 @NgModule({
   declarations: [
-    BoutiqueAddComponent,
-    BoutiqueEditComponent,
-    BoutiqueListComponent,
+    ShopAddComponent,
+    ShopEditComponent,
+    ShopListComponent,
     AppComponent,
     NavigationBarComponent,
-    ProduitListComponent,
-    ProduitEditComponent
+    ProductListComponent,
+    ProductEditComponent,
+    ProductAddComponent,
+    CategoryAddComponent,
+    CategoryListComponent,
+    CategoryEditComponent
   ],
   imports : [
     RouterModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
+    HttpClientModule,    
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule 
   ],
-  providers: [BoutiqueService],
+  providers: [ShopService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
