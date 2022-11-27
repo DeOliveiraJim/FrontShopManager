@@ -3,7 +3,8 @@ export class Shop {
     name!: string;
     openingTime!: string;
     vacation !: boolean;
-    dateCreation !: Date;
-    nbCategorys !: number;
+    creationDate !: Date;
+    nbCategories !: number;
+    nbProducts !: string
     
  }

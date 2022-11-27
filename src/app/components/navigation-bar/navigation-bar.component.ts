@@ -8,18 +8,14 @@ import { Router } from '@angular/router';
 })
 export class NavigationBarComponent implements OnInit {
 
+
+
   constructor(
     private router: Router
-  ){ }
+  ){  }
+
   ngOnInit(): void {
   }
 
-  goToAdd() {
-    this.router.navigateByUrl('/shops/add');
-  }
-
-  goToHome() {
-    this.router.navigateByUrl('/shop');
-  }
 
 }

@@ -17,6 +17,8 @@ import { ProductAddComponent } from './components/product-add/product-add.compon
 import { CategoryAddComponent } from './components/category-add/category-add.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { CategoryEditComponent } from './components/category-edit/category-edit.component';
+import { CategoryService } from './services/category.service';
+import { ProductService } from './services/product.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { CategoryEditComponent } from './components/category-edit/category-edit.
     ReactiveFormsModule,
     NgxPaginationModule 
   ],
-  providers: [ShopService],
+  providers: [ShopService,ProductService,CategoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

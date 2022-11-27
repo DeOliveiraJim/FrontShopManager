@@ -12,6 +12,7 @@ export class CategoryListComponent implements OnInit {
   pages: number = 1;
   orderName : string = "(croissant)";
   sortNbName : number = -1;
+  searchList: any = [];
 
   ngOnInit() {
     this.loadCategorys();
@@ -23,8 +24,7 @@ export class CategoryListComponent implements OnInit {
    loadCategorys() {
     return this.categoryService.GetCategorys().subscribe((data: {}) => {
       this.categoryList = data;
-      console.log("data");
-      console.log(data);
+      this.searchList = Array.from(this.categoryList);
     })
     }
     // Delete category
@@ -35,6 +35,28 @@ export class CategoryListComponent implements OnInit {
          console.log('category supprimée!')
        })    
     }
+
+
+    onSubmit(event: any) {      
+      this.researchShop(event.target.search.value);
+    }
+
+    researchShop(categoryName : string) {
+      this.categoryList = Array.from(this.searchList);
+      while (this.categoryList.length > 1) {
+        this.categoryList.pop();
+      }
+      var category = this.searchList.find((category: { name: string; }) => category.name == categoryName);
+      if(category != undefined) {
+        this.categoryList.unshift(category);   
+      }    
+      this.categoryList.pop();
+    }
+
+    resetSearch() {
+      this.categoryList = Array.from(this.searchList);
+    }
+
 
     sortData(sortingBy : string) {     
 

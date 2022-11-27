@@ -1,9 +1,15 @@
 
+
 <div class="container wrapper">
+
     <div class="row">
         <div class="col-md-12">
             <div class="header">
-                
+                <form class="d-flex" role="search" (ngSubmit)="onSubmit($event)">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" >
+                    <button type="submit" class="btn btn-info">Rechercher</button>
+                  </form> 
+                  
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                       Tri
@@ -11,8 +17,24 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                       <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
                       <li><button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button></li>
+                    </ul>  
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                      Options de recherche
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li>
+                        <div>
+                          <input type="checkbox" id="congeSearch" name="conge" checked>
+                          <label for="conge">Conge</label>
+                        </div>
+                      </li>
                     </ul>
+                    <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>                  
                   </div>
+                  
+
+                  
+
 
             </div>
             <div class="inner">
@@ -20,7 +42,7 @@
                 <div >
                     <div class="border my-3"
                       *ngFor="
-                        let shop of shopList | paginate: { itemsPerPage: 2, currentPage: pages }
+                        let shop of shopList | paginate: { itemsPerPage: 4, currentPage: pages }
                       "
                     >
                     <table class="table table-bordered">
@@ -32,6 +54,7 @@
                                 <th scope="col">Conge</th>
                                 <th scope="col">Date de création</th>
                                 <th scope="col">Nombre de catégories</th>
+                                <th scope="col">Nombre de produits</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,12 +64,14 @@
                                 <td>{{shop.openingTime}}</td>
                                 <td *ngIf="shop.vacation">Oui</td>
                                 <td *ngIf="!shop.vacation">Non</td>
-                                <td>{{shop.dateCreation}}</td>
-                                <td>{{shop.nbCategorys}}</td>
+                                <td>{{shop.creationDate}}</td>
+                                <td>{{shop.nbCategories}}</td>
+                                <td>{{shop.nbProducts}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/shops/edit', shop.id]">Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/shops/'+ shop.id + '/products/']">Produits</button>
+                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/shops/edit', shop.id]">Modifier</button>
                                     <button type="button" class="btn btn-danger btn-sm" (click)="deleteShop(shop)">Supprimer</button>
-                                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/shops/'+ shop.id + '/products/']">Products</button>
+                                    
                                 </td>
                             </tr>
                         </tbody>

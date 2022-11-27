@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
+import { Injectable } from '@angular/core';
 
 @Component({
   selector: 'app-shop-list',
   templateUrl: './shop-list.component.html',
   styleUrls: ['./shop-list.component.css']
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class ShopListComponent implements OnInit {
 
   shopList: any = [];
+  searchList: any = [];
   pages: number = 1;
   orderName : string = "(croissant)";
   orderDate : string = "(croissant)";
@@ -17,6 +22,8 @@ export class ShopListComponent implements OnInit {
   vacation : string = "";
   sortNbName : number = -1;
   sortNbDate : number = -1;
+  searchByConge : boolean = false;
+
 
   ngOnInit() {
     this.loadShops();
@@ -28,8 +35,7 @@ export class ShopListComponent implements OnInit {
    loadShops() {
     return this.shopService.GetShops().subscribe((data: {}) => {
       this.shopList = data;
-      console.log("data");
-      console.log(data);
+      this.searchList = Array.from(this.shopList);
     })
     }
     // Delete shop
@@ -40,6 +46,33 @@ export class ShopListComponent implements OnInit {
          console.log('Shop supprimée!')
        })    
     }
+    onSubmit(event: any) {      
+      this.researchShop(event.target.search.value);
+    }
+
+
+
+    researchShop(shopName : string) {
+      this.searchByConge = ((<HTMLInputElement>document.getElementById("congeSearch")).checked);
+      this.shopList = Array.from(this.searchList);
+      while (this.shopList.length > 1) {
+        this.shopList.pop();
+      }
+      console.log(this.searchList);
+      var shop = this.searchList.find((shop: { name: string; vacation: boolean; }) => shop.name == shopName && shop.vacation == this.searchByConge);
+      console.log(shop);
+      if(shop != undefined) {
+        this.shopList.unshift(shop);   
+      }    
+      this.shopList.pop();
+    }
+
+    resetSearch() {
+      this.shopList = Array.from(this.searchList);
+    }
+
+
+
 
     sortData(sortingBy : string) {     
 
@@ -87,7 +120,11 @@ export class ShopListComponent implements OnInit {
 
     }
 
-  
+    
+
+    else if(sortingBy == "nbProducts") {
+      //Faire par nombre de Produits
+    }    
     
   }
 

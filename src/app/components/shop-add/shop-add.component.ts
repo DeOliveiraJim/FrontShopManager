@@ -30,7 +30,7 @@ export class ShopAddComponent implements OnInit {
   submitForm() {
     this.shopService.CreateShop(this.shopForm.value).subscribe((res) => {
       console.log('Shop ajoutée!');
-      this.ngZone.run(() => this.router.navigateByUrl('/shops/'));
+      this.ngZone.run(() => this.router.navigateByUrl('/'));
     });
   }
 

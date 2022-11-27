@@ -33,7 +33,7 @@ export class ProductAddComponent implements OnInit {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
     this.productService.CreateProduct(id,this.productForm.value).subscribe((res) => {
       console.log('product ajoutée!');
-      this.ngZone.run(() => this.router.navigateByUrl('/'));
+      this.ngZone.run(() => this.router.navigateByUrl('/shops/' + id + '/products'));
     });
   }
 

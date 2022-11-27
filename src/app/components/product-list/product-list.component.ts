@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
+import { Category } from 'src/app/shared/category';
 
 @Component({
   selector: 'app-product-list',
@@ -12,13 +13,15 @@ export class ProductListComponent implements OnInit {
 
 
   productList : any = [];
+  searchList: any = [];
   pages: number = 1;
   idShop !: string;
   orderName : string = "(croissant)";
   orderPrice : string = "(croissant)";
   orderNbProd : string = "(croissant)";
   sortNbName : number = -1;
-  sortNbPrice : number = -1;
+  sortNbPrice : number = -1;  
+  
 
   constructor(
     public productService: ProductService,
@@ -38,8 +41,9 @@ export class ProductListComponent implements OnInit {
   // products list
   loadProducts() {
     
-    return this.productService.GetProducts(this.idShop).subscribe((data: {}) => {
+    return this.productService.GetProducts(this.idShop).subscribe((data : {}) => {
       this.productList = data;
+      this.searchList = Array.from(this.productList);
     })    
   }
 
@@ -60,6 +64,27 @@ export class ProductListComponent implements OnInit {
     redirectAddProduct() {
       this.ngZone.run(() => this.router.navigateByUrl('shops/' + this.idShop + '/products/add'))
     }
+
+    onSubmit(event: any) {      
+      this.researchProduct(event.target.search.value);
+    }
+
+    researchProduct(productName : string) {
+      this.productList = Array.from(this.searchList);
+      while (this.productList.length > 1) {
+        this.productList.pop();
+      }
+      var product = this.searchList.find((product: { name: string; }) => product.name == productName);
+      if(product != undefined) {
+        this.productList.unshift(product);   
+      }    
+      this.productList.pop();
+    }
+
+    resetSearch() {
+      this.productList = Array.from(this.searchList);
+    }
+
 
     sortData(sortingBy : string) {     
 
