@@ -7,6 +7,9 @@
             name="search">
           <button type="submit" class="btn btn-info">Rechercher</button>
         </form>
+      </div>
+
+      <div class="inner my-4">
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
             data-bs-toggle="dropdown" aria-expanded="false">
@@ -15,13 +18,11 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
           </div>
-          <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>
+          <button type="button" class="btn btn-danger" (click)="resetSearch()">Réinitialisation</button>
           <button class="btn btn-primary float-end" type="button" routerLink="/categories/add">Ajout d'une
             catégorie</button>
         </div>
-      </div>
 
-      <div class="inner my-4">
         <table class="table">
           <thead>
             <tr>
@@ -44,8 +45,9 @@
           </tbody>
         </table>
 
-        <pagination-controls (pageChange)="pages = $event"></pagination-controls>
-
+        <pagination-controls class="pagination" (pageChange)="pages = $event" previousLabel="Précédent"
+          nextLabel="Suivant" [responsive]="true">
+        </pagination-controls>
       </div>
     </div>
   </div>
