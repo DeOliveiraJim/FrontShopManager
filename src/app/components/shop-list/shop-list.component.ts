@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { ShopService } from 'src/app/services/shop.service';
+import { Shop } from 'src/app/shared/shop';
 
 @Component({
   selector: 'app-shop-list',
@@ -10,8 +11,8 @@ import { ShopService } from 'src/app/services/shop.service';
   providedIn: 'root',
 })
 export class ShopListComponent implements OnInit {
-  shopList: any = [];
-  searchList: any = [];
+  shopList: Shop[] = [];
+  searchList: Shop[] = [];
   pages: number = 1;
   orderName: string = '(croissant)';
   orderDate: string = '(croissant)';
@@ -27,13 +28,13 @@ export class ShopListComponent implements OnInit {
   constructor(public shopService: ShopService) {}
   // shops list
   loadShops() {
-    return this.shopService.GetShops().subscribe((data: {}) => {
-      this.shopList = data;
+    this.shopService.GetShops().subscribe((shops) => {
+      this.shopList.push(...shops);
       this.searchList = Array.from(this.shopList);
     });
   }
   // Delete shop
-  deleteShop(data: { name: string; id: string }) {
+  deleteShop(data: Shop) {
     var index = this.shopList
       .map((shop: { name: string }) => {
         return shop.name;
@@ -44,8 +45,11 @@ export class ShopListComponent implements OnInit {
       console.log('Shop supprimée!');
     });
   }
-  onSubmit(event: any) {
-    this.researchShop(event.target.search.value);
+  onSubmit(event: SubmitEvent) {
+    if (event.target === null) return;
+    const target = event.target as HTMLFormElement;
+    const searchForm = target.childNodes[0] as HTMLInputElement;
+    this.researchShop(searchForm.value);
   }
 
   researchShop(shopName: string) {
@@ -97,15 +101,13 @@ export class ShopListComponent implements OnInit {
 
       this.sortNbDate = -this.sortNbDate;
 
-      this.shopList.sort(
-        (a: { dateCreation: Date }, b: { dateCreation: Date }) => {
-          if (a.dateCreation < b.dateCreation) {
-            return -this.sortNbDate;
-          } else {
-            return this.sortNbDate;
-          }
+      this.shopList.sort((a, b) => {
+        if (a.creationDate < b.creationDate) {
+          return -this.sortNbDate;
+        } else {
+          return this.sortNbDate;
         }
-      );
+      });
     } else if (sortingBy == 'nbProducts') {
       //Faire par nombre de Produits
     }
