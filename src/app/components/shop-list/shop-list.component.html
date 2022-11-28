@@ -1,6 +1,11 @@
-
-
 <div class="container wrapper">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="header">
+        <form class="d-flex mb-2" role="search" (ngSubmit)="onSubmit($event)">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          <button type="submit" class="btn btn-info">Rechercher</button>
+        </form>
 
     <div class="row">
         <div class="col-md-12">
@@ -38,52 +43,62 @@
 
 
             </div>
-            <div class="inner">
-
-                <div >
-                    <div class="border my-3"
-                      *ngFor="
-                        let shop of shopList | paginate: { itemsPerPage: 4, currentPage: pages }
-                      "
-                    >
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Shop</th>
-                                <th scope="col">Horaires</th>
-                                <th scope="col">Conge</th>
-                                <th scope="col">Date de création</th>
-                                <th scope="col">Nombre de catégories</th>
-                                <th scope="col">Nombre de produits</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">{{shop.id}}</th>
-                                <td>{{shop.name}}</td>
-                                <td>{{shop.openingTime}}</td>
-                                <td *ngIf="shop.vacation">Oui</td>
-                                <td *ngIf="!shop.vacation">Non</td>
-                                <td>{{shop.creationDate}}</td>
-                                <td>{{shop.nbCategories}}</td>
-                                <td>{{shop.nbProducts}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/shops/'+ shop.id + '/products/']">Produits</button>
-                                    <button type="button" class="btn btn-success btn-sm move-right" [routerLink]="['/shops/edit', shop.id]">Modifier</button>
-                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteShop(shop)">Supprimer</button>
-                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                    </div>
-                  </div>
-                  
-                  <pagination-controls (pageChange)="pages = $event"></pagination-controls>
-                  
-              
+          </div>
+          <div class="btn-group me-2">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Options de recherche
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <input type="checkbox" id="congeSearch" name="conge" checked />
+              <label for="conge">Conge</label>
             </div>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>
+          </div>
         </div>
+      </div>
+
+      <div class="inner">
+        <table class="table table-bordered my-2">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Shop</th>
+              <th scope="col">Horaires</th>
+              <th scope="col">Conge</th>
+              <th scope="col">Date de création</th>
+              <th scope="col">Nombre de catégories</th>
+              <th scope="col">Nombre de produits</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let shop of shopList | paginate: { itemsPerPage: 1, currentPage: pages }">
+              <th scope="row">{{shop.id}}</th>
+              <td>{{shop.name}}</td>
+              <td>{{shop.openingTime}}</td>
+              <td *ngIf="shop.vacation">Oui</td>
+              <td *ngIf="!shop.vacation">Non</td>
+              <td>{{shop.creationDate}}</td>
+              <td>{{shop.nbCategories}}</td>
+              <td>{{shop.nbProducts}}</td>
+              <td>
+                <button type="button" class="btn btn-primary btn-sm me-1"
+                  [routerLink]="['/shops/'+ shop.id + '/products/']">Produits</button>
+                <button type="button" class="btn btn-success btn-sm me-1"
+                  [routerLink]="['/shops/edit', shop.id]">Modifier</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteShop(shop)">Supprimer</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <pagination-controls class="pagination" (pageChange)="pages = $event" previousLabel="Précédent"
+        nextLabel="Suivant" [responsive]="true">
+      </pagination-controls>
     </div>
+  </div>
 </div>

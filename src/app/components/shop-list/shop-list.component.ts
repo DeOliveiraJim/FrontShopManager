@@ -110,8 +110,8 @@ export class ShopListComponent implements OnInit {
 
       this.sortNbDate = -this.sortNbDate;
 
-      this.shopList.sort( (a: { dateCreation: Date; }, b: { dateCreation: Date; }) => {
-        if (a.dateCreation < b.dateCreation) {
+      this.shopList.sort( (a: { creationDate : Date; }, b: { creationDate: Date; }) => {
+        if (a.creationDate < b.creationDate) {
           return -this.sortNbDate;
         } else {
           return this.sortNbDate;
