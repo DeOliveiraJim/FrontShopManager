@@ -22,6 +22,7 @@ export class ShopListComponent implements OnInit {
   vacation : string = "";
   sortNbName : number = -1;
   sortNbDate : number = -1;
+  sortNbProd : number = -1;
   searchByConge : boolean = false;
 
 
@@ -76,7 +77,7 @@ export class ShopListComponent implements OnInit {
 
     sortData(sortingBy : string) {     
 
-      if(sortingBy == "Nom") {
+      if(sortingBy == "Name") {
 
         if(this.orderName == "(croissant)") {
           this.orderName = "(décroissant)";        
@@ -119,11 +120,28 @@ export class ShopListComponent implements OnInit {
 
 
     }
-
     
 
     else if(sortingBy == "nbProducts") {
-      //Faire par nombre de Produits
+
+      if(this.orderNbProd == "(croissant)") {
+        this.orderNbProd = "(décroissant)";
+      }
+      else {
+        this.orderNbProd = "(croissant)";
+      }
+
+
+      this.sortNbProd = -this.sortNbProd;
+
+      this.shopList.sort( (a: { nbProducts: number; }, b: { nbProducts: number; }) => {
+        if (a.nbProducts < b.nbProducts) {
+          return -this.sortNbProd;
+        } else {
+          return this.sortNbProd;
+        }
+    });
+
     }    
     
   }

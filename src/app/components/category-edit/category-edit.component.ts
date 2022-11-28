@@ -41,7 +41,7 @@ export class CategoryEditComponent implements OnInit {
       console.log(id);
       console.log('Category éditée!');
       console.log(this.updateCategoryForm.value)
-      this.ngZone.run(() => this.router.navigateByUrl('/category/all'))
+      this.ngZone.run(() => this.router.navigateByUrl('/categories'))
     })
   }
 }

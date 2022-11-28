@@ -15,8 +15,9 @@
                       Tri
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                      <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
+                      <li><button class="dropdown-item" type="button" (click)="sortData('Name')">Nom {{orderName}}</button></li>
                       <li><button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button></li>
+                      <li><button class="dropdown-item" type="button" (click)="sortData('nbProducts')">Produits {{orderNbProd}}</button></li>
                     </ul>  
                     <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                       Options de recherche
