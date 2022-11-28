@@ -49,7 +49,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let shop of shopList | paginate: { itemsPerPage: 1, currentPage: pages }">
+            <tr *ngFor="let shop of shopList | paginate: { itemsPerPage: 5, currentPage: pages }">
               <th scope="row">{{shop.id}}</th>
               <td>{{shop.name}}</td>
               <td>{{shop.openingTime}}</td>
