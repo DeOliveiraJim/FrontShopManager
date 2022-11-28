@@ -7,15 +7,41 @@
           <button type="submit" class="btn btn-info">Rechercher</button>
         </form>
 
-        <div class="dropdown">
-          <div class="btn-group me-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Tri
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
-              <button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header">
+                <form class="d-flex" role="search" (ngSubmit)="onSubmit($event)">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" >
+                    <button type="submit" class="btn btn-info">Rechercher</button>
+                  </form> 
+                  
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                      Tri
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li><button class="dropdown-item" type="button" (click)="sortData('Name')">Nom {{orderName}}</button></li>
+                      <li><button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button></li>
+                      <li><button class="dropdown-item" type="button" (click)="sortData('nbProducts')">Produits {{orderNbProd}}</button></li>
+                    </ul>  
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                      Options de recherche
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li>
+                        <div>
+                          <input type="checkbox" id="congeSearch" name="conge" checked>
+                          <label for="conge">Conge</label>
+                        </div>
+                      </li>
+                    </ul>
+                    <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>                  
+                  </div>
+                  
+
+                  
+
+
             </div>
           </div>
           <div class="btn-group me-2">

@@ -1,26 +1,29 @@
 import { Component, Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
 
 @Component({
   selector: 'app-shop-list',
   templateUrl: './shop-list.component.html',
-  styleUrls: ['./shop-list.component.css'],
+  styleUrls: ['./shop-list.component.css']
 })
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ShopListComponent implements OnInit {
   shopList: Shop[] = [];
   searchList: Shop[] = [];
   pages: number = 1;
-  orderName: string = '(croissant)';
-  orderDate: string = '(croissant)';
-  orderNbProd: string = '(croissant)';
-  vacation: string = '';
-  sortNbName: number = -1;
-  sortNbDate: number = -1;
-  searchByConge: boolean = false;
+  orderName : string = "(croissant)";
+  orderDate : string = "(croissant)";
+  orderNbProd : string = "(croissant)";
+  vacation : string = "";
+  sortNbName : number = -1;
+  sortNbDate : number = -1;
+  sortNbProd : number = -1;
+  searchByConge : boolean = false;
+
 
   ngOnInit() {
     this.loadShops();
@@ -52,52 +55,62 @@ export class ShopListComponent implements OnInit {
     this.researchShop(searchForm.value);
   }
 
-  researchShop(shopName: string) {
-    this.searchByConge = (<HTMLInputElement>(
-      document.getElementById('congeSearch')
-    )).checked;
-    this.shopList = Array.from(this.searchList);
-    while (this.shopList.length > 1) {
+
+
+    researchShop(shopName : string) {
+      this.searchByConge = ((<HTMLInputElement>document.getElementById("congeSearch")).checked);
+      this.shopList = Array.from(this.searchList);
+      while (this.shopList.length > 1) {
+        this.shopList.pop();
+      }
+      console.log(this.searchList);
+      var shop = this.searchList.find((shop: { name: string; vacation: boolean; }) => shop.name == shopName && shop.vacation == this.searchByConge);
+      console.log(shop);
+      if(shop != undefined) {
+        this.shopList.unshift(shop);   
+      }    
       this.shopList.pop();
     }
-    console.log(this.searchList);
-    var shop = this.searchList.find(
-      (shop: { name: string; vacation: boolean }) =>
-        shop.name == shopName && shop.vacation == this.searchByConge
-    );
-    console.log(shop);
-    if (shop != undefined) {
-      this.shopList.unshift(shop);
+
+    resetSearch() {
+      this.shopList = Array.from(this.searchList);
     }
-    this.shopList.pop();
-  }
 
-  resetSearch() {
-    this.shopList = Array.from(this.searchList);
-  }
 
-  sortData(sortingBy: string) {
-    if (sortingBy == 'Nom') {
-      if (this.orderName == '(croissant)') {
-        this.orderName = '(décroissant)';
-      } else {
-        this.orderName = '(croissant)';
-      }
-      this.sortNbName = -this.sortNbName;
 
-      this.shopList.sort((a: { name: string }, b: { name: string }) => {
-        if (a.name < b.name) {
-          return -this.sortNbName;
-        } else {
-          return this.sortNbName;
+
+    sortData(sortingBy : string) {     
+
+      if(sortingBy == "Name") {
+
+        if(this.orderName == "(croissant)") {
+          this.orderName = "(décroissant)";        
         }
+        else {
+          this.orderName = "(croissant)";
+        }
+        this.sortNbName = -this.sortNbName;
+
+        this.shopList.sort( (a: { name: string; }, b: { name: string; }) => {
+          if (a.name < b.name) {
+            return -this.sortNbName;
+          } else {
+            return this.sortNbName;
+          }
       });
-    } else if (sortingBy == 'Date') {
-      if (this.orderDate == '(croissant)') {
-        this.orderDate = '(décroissant)';
-      } else {
-        this.orderDate = '(croissant)';
+
+
+    }
+
+    else if(sortingBy == "Date") {
+
+      if(this.orderDate == "(croissant)") {
+        this.orderDate = "(décroissant)";
       }
+      else {
+        this.orderDate = "(croissant)";
+      }
+
 
       this.sortNbDate = -this.sortNbDate;
 
@@ -111,5 +124,30 @@ export class ShopListComponent implements OnInit {
     } else if (sortingBy == 'nbProducts') {
       //Faire par nombre de Produits
     }
+    
+
+    else if(sortingBy == "nbProducts") {
+
+      if(this.orderNbProd == "(croissant)") {
+        this.orderNbProd = "(décroissant)";
+      }
+      else {
+        this.orderNbProd = "(croissant)";
+      }
+
+
+      this.sortNbProd = -this.sortNbProd;
+
+      this.shopList.sort( (a, b) => {
+        if (a.nbProducts < b.nbProducts) {
+          return -this.sortNbProd;
+        } else {
+          return this.sortNbProd;
+        }
+    });
+
+    }    
+    
   }
+
 }
