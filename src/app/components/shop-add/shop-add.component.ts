@@ -6,10 +6,9 @@ import { ShopService } from 'src/app/services/shop.service';
 @Component({
   selector: 'app-shop-add',
   templateUrl: './shop-add.component.html',
-  styleUrls: ['./shop-add.component.css']
+  styleUrls: ['./shop-add.component.css'],
 })
 export class ShopAddComponent implements OnInit {
-
   shopForm!: FormGroup;
   ngOnInit() {
     this.addShop();
@@ -24,7 +23,7 @@ export class ShopAddComponent implements OnInit {
     this.shopForm = this.fb.group({
       name: [''],
       openingTime: [''],
-      vacation: ['']
+      vacation: [''],
     });
   }
   submitForm() {
@@ -33,5 +32,4 @@ export class ShopAddComponent implements OnInit {
       this.ngZone.run(() => this.router.navigateByUrl('/'));
     });
   }
-
 }
