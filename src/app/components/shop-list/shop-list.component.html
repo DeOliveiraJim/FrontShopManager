@@ -53,7 +53,8 @@
               <td>{{shop.openingTime}}</td>
               <td *ngIf="shop.vacation">Oui</td>
               <td *ngIf="!shop.vacation">Non</td>
-              <td>{{shop.creationDate}}</td>
+              <td>{{shop.creationDate.toLocaleString(undefined, { year: 'numeric', month: 'numeric',
+                day: 'numeric', hour: 'numeric', minute: 'numeric'})}}</td>
               <td>{{shop.nbCategories}}</td>
               <td>{{shop.nbProducts}}</td>
               <td>

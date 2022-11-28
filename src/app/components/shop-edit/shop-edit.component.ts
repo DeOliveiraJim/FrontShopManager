@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 
@@ -9,7 +9,11 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./shop-edit.component.css'],
 })
 export class ShopEditComponent implements OnInit {
-  updateShopForm!: FormGroup;
+  updateShopForm!: FormGroup<{
+    name: FormControl<string | null>;
+    openingTime: FormControl<string | null>;
+    vacation: FormControl<boolean | null>;
+  }>;
 
   ngOnInit() {
     this.updateForm();
@@ -22,6 +26,7 @@ export class ShopEditComponent implements OnInit {
     private router: Router
   ) {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
+
     this.shopService.GetShop(id).subscribe((data) => {
       this.updateShopForm = this.fb.group({
         name: [data.name],
@@ -34,18 +39,18 @@ export class ShopEditComponent implements OnInit {
     this.updateShopForm = this.fb.group({
       name: [''],
       openingTime: [''],
-      vacation: [''],
+      vacation: [false],
     });
   }
   submitForm() {
-    var id = this.actRoute.snapshot.paramMap.get('id')!;
+    let id = this.actRoute.snapshot.paramMap.get('id')!;
     this.shopService
       .UpdateShop(id, this.updateShopForm.value)
       .subscribe((res) => {
         console.log(id);
         console.log('Shop éditée!');
         console.log(this.updateShopForm.value);
-        this.ngZone.run(() => this.router.navigateByUrl('/shops/'));
+        this.ngZone.run(() => this.router.navigateByUrl('/shops'));
       });
   }
 }
