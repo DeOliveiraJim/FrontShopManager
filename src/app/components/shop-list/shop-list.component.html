@@ -33,7 +33,7 @@
       </div>
 
       <div class="inner my-4">
-        <table class="table table-bordered">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -43,7 +43,7 @@
               <th scope="col">Date de création</th>
               <th scope="col">Nombre de catégories</th>
               <th scope="col">Nombre de produits</th>
-              <th scope="col"></th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -61,7 +61,7 @@
                   [routerLink]="['/shops/'+ shop.id + '/products/']">Produits</button>
                 <button type="button" class="btn btn-success btn-sm me-1"
                   [routerLink]="['/shops/edit', shop.id]">Modifier</button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteShop(shop)">Supprimer</button>
+                <button type="button" class="btn btn-danger btn-sm me-1" (click)="deleteShop(shop)">Supprimer</button>
               </td>
             </tr>
           </tbody>

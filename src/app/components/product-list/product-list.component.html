@@ -23,7 +23,7 @@
       </div>
 
       <div class="inner my-4">
-        <table class="table table-bordered">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -31,7 +31,7 @@
               <th scope="col">Prix</th>
               <th scope="col">Description</th>
               <th scope="col">Catégories</th>
-              <th></th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -48,9 +48,10 @@
               </td>
 
               <td>
-                <button type="button" class="btn btn-success btn-sm move-right"
+                <button type="button" class="btn btn-success btn-sm me-1"
                   (click)="redirectEditProduct(product)">Edit</button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteProduct(product)">Supprimer</button>
+                <button type="button" class="btn btn-danger btn-sm me-1"
+                  (click)="deleteProduct(product)">Supprimer</button>
               </td>
             </tr>
           </tbody>
