@@ -1,7 +1,7 @@
 <div class="container wrapper">
   <div class="row">
     <div class="col-md-12">
-      <div class="header my-4">
+      <div class="header mb-4">
         <form class="d-flex mb-1" role="search" (ngSubmit)="onSubmit($event)">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
           <button type="submit" class="btn btn-info">Rechercher</button>
@@ -16,7 +16,8 @@
             <button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button>
           </div>
           <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Reset</button>
-          <button class="btn btn-primary float-end" type="button" (click)="redirectAddProduct()">Ajout d'un
+          <button class="btn btn-primary float-end" type="button"
+            [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
             produit</button>
         </div>
       </div>
