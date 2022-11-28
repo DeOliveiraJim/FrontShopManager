@@ -27,7 +27,7 @@ export class CategoryListComponent implements OnInit {
   }
   // Delete category
   deleteCategory(data: Category) {
-    var index = this.categoryList
+    let index = this.categoryList
       .map((category: { name: string }) => {
         return category.name;
       })

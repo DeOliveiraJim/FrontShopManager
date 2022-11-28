@@ -9,7 +9,6 @@ import { CategoryService } from 'src/app/services/category.service';
   styleUrls: ['./category-edit.component.css'],
 })
 export class CategoryEditComponent implements OnInit {
-  categoryList: any = [];
   updateCategoryForm!: FormGroup;
 
   ngOnInit() {
@@ -38,11 +37,8 @@ export class CategoryEditComponent implements OnInit {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
     this.categoryService
       .UpdateCategory(id, this.updateCategoryForm.value)
-      .subscribe((res) => {
-        console.log(id);
-        console.log('Category éditée!');
-        console.log(this.updateCategoryForm.value);
-        this.ngZone.run(() => this.router.navigateByUrl('/category/all'));
+      .subscribe(() => {
+        this.ngZone.run(() => this.router.navigateByUrl('/categories'));
       });
   }
 }
