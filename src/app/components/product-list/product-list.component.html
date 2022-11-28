@@ -1,73 +1,63 @@
-
 <div class="container wrapper">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="header">
-                <form class="d-flex" role="search" (ngSubmit)="onSubmit($event)">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" >
-                    <button type="submit" class="btn btn-info">Rechercher</button>
-                  </form> 
-                <div>
-                <button class="btn btn-primary " type="button" (click)="redirectAddProduct()">Ajout d'un produit</button>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                  Tri
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
-                  <li><button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button></li>
-                </ul>
-                <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>
-              </div>
-
-            <div class="inner">
-
-                <div >
-                    <div class="border my-3"
-                      *ngFor="
-                        let product of productList | paginate: { itemsPerPage: 10, currentPage: pages }
-                      "
-                    >
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">product</th>
-                                <th scope="col">Prix</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Catégories</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">{{product.id}}</th>
-                                <td>{{product.name}}</td>
-                                <td>{{product.price}}</td>
-                                <td>{{product.description}}</td>
-
-                                <td>
-                                    <p *ngFor="let cat of product.categories">
-                                        {{cat.name}}
-                                    </p>
-                                </td>
-
-                                <td>
-                                    <button type="button" class="btn btn-success btn-sm move-right" (click)="redirectEditProduct(product)">Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteProduct(product)">Supprimer</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                    </div>
-                  </div>
-                  
-                  <pagination-controls (pageChange)="pages = $event"></pagination-controls>
-                  
-              
-            </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="header my-4">
+        <form class="d-flex mb-1" role="search" (ngSubmit)="onSubmit($event)">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          <button type="submit" class="btn btn-info">Rechercher</button>
+        </form>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Tri
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
+            <button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button>
+          </div>
+          <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Reset</button>
+          <button class="btn btn-primary float-end" type="button" (click)="redirectAddProduct()">Ajout d'un
+            produit</button>
         </div>
+      </div>
+
+      <div class="inner my-4">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">product</th>
+              <th scope="col">Prix</th>
+              <th scope="col">Description</th>
+              <th scope="col">Catégories</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productList | paginate: { itemsPerPage: 10, currentPage: pages }">
+              <th scope="row">{{product.id}}</th>
+              <td>{{product.name}}</td>
+              <td>{{product.price}}</td>
+              <td>{{product.description}}</td>
+
+              <td>
+                <p *ngFor="let cat of product.categories">
+                  {{cat.name}}
+                </p>
+              </td>
+
+              <td>
+                <button type="button" class="btn btn-success btn-sm move-right"
+                  (click)="redirectEditProduct(product)">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteProduct(product)">Supprimer</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls class="pagination" (pageChange)="pages = $event" previousLabel="Précédent"
+          nextLabel="Suivant" [responsive]="true">
+        </pagination-controls>
+      </div>
     </div>
+  </div>
 </div>

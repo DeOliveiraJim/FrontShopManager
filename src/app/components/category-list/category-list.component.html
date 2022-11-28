@@ -1,54 +1,47 @@
 <div class="container wrapper">
   <div class="row">
     <div class="col-md-12">
-      <div class="header">
-        <form class="d-flex" role="search" (ngSubmit)="onSubmit($event)">
+      <div class="header my-4">
+        <form class="d-flex mb-1" role="search" (ngSubmit)="onSubmit($event)">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
           <button type="submit" class="btn btn-info">Rechercher</button>
         </form>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
-            aria-expanded="false">
+          <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
+            data-bs-toggle="dropdown" aria-expanded="false">
             Tri
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li><button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button></li>
-          </ul>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
+          </div>
           <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>
         </div>
-
       </div>
-      <div class="inner">
 
-        <div>
-          <div class="border my-3" *ngFor="
-                        let category of categoryList | paginate: { itemsPerPage: 6, currentPage: pages }
-                      ">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Categorie</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">{{category.id}}</th>
-                  <td>{{category.name}}</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-sm move-right"
-                      [routerLink]="['/categories/edit', category.id]">Edit</button>
-                    <button type="button" class="btn btn-danger btn-sm"
-                      (click)="deleteCategory(category)">Supprimer</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="inner my-4">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Categorie</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categoryList | paginate: { itemsPerPage: 6, currentPage: pages }">
+              <th scope="row">{{category.id}}</th>
+              <td>{{category.name}}</td>
+              <td>
+                <button type="button" class="btn btn-success btn-sm move-right"
+                  [routerLink]="['/categories/edit', category.id]">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm"
+                  (click)="deleteCategory(category)">Supprimer</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <pagination-controls (pageChange)="pages = $event"></pagination-controls>
-
 
       </div>
     </div>
