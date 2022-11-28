@@ -2,8 +2,18 @@
   <div class="row">
     <div class="col-md-12">
       <div class="header mb-4">
-        <form class="d-flex mb-1" role="search" (ngSubmit)="onSubmit($event)">
+        <form class="d-flex mb-2" role="search" (ngSubmit)="onSubmit($event)">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          <button class="btn btn-info dropdown-toggle me-1" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Options de recherche
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <div>
+              <input type="checkbox" id="congeSearch" name="conge" checked>
+              <label for="conge">Conge</label>
+            </div>
+          </div>
           <button type="submit" class="btn btn-info">Rechercher</button>
         </form>
         <div class="dropdown">
@@ -16,16 +26,6 @@
             <button class="dropdown-item" type="button" (click)="sortData('Date')">Date {{orderDate}}</button>
             <button class="dropdown-item" type="button" (click)="sortData('nbProducts')">Produits
               {{orderNbProd}}</button>
-          </div>
-          <button class="btn btn-info dropdown-toggle me-1" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Options de recherche
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <div>
-              <input type="checkbox" id="congeSearch" name="conge" checked>
-              <label for="conge">Conge</label>
-            </div>
           </div>
           <button type="button" class="btn btn-danger" (click)="resetSearch()">Reset</button>
           <button class="btn btn-primary float-end" type="button" routerLink="/shops/add">Ajout d'une boutique</button>
