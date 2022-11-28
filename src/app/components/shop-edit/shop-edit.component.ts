@@ -6,46 +6,46 @@ import { ShopService } from 'src/app/services/shop.service';
 @Component({
   selector: 'app-shop-edit',
   templateUrl: './shop-edit.component.html',
-  styleUrls: ['./shop-edit.component.css']
+  styleUrls: ['./shop-edit.component.css'],
 })
 export class ShopEditComponent implements OnInit {
-
-  shopList: any = [];
   updateShopForm!: FormGroup;
-  
+
   ngOnInit() {
-    this.updateForm()
+    this.updateForm();
   }
   constructor(
-    private actRoute: ActivatedRoute,    
+    private actRoute: ActivatedRoute,
     public shopService: ShopService,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router
-  ) { 
+  ) {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
     this.shopService.GetShop(id).subscribe((data) => {
       this.updateShopForm = this.fb.group({
         name: [data.name],
         openingTime: [data.openingTime],
-        vacation: [data.vacation]
-      })
-    })
+        vacation: [data.vacation],
+      });
+    });
   }
-  updateForm(){
+  updateForm() {
     this.updateShopForm = this.fb.group({
       name: [''],
       openingTime: [''],
-      vacation: ['']
-    })    
+      vacation: [''],
+    });
   }
-  submitForm(){ 
+  submitForm() {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.shopService.UpdateShop(id, this.updateShopForm.value).subscribe(res => {
-      console.log(id);
-      console.log('Shop éditée!');
-      console.log(this.updateShopForm.value)
-      this.ngZone.run(() => this.router.navigateByUrl('/shops/'))
-    })
+    this.shopService
+      .UpdateShop(id, this.updateShopForm.value)
+      .subscribe((res) => {
+        console.log(id);
+        console.log('Shop éditée!');
+        console.log(this.updateShopForm.value);
+        this.ngZone.run(() => this.router.navigateByUrl('/shops/'));
+      });
   }
 }

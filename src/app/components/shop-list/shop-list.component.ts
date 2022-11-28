@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
-import { Injectable } from '@angular/core';
+import { Shop } from 'src/app/shared/shop';
 
 @Component({
   selector: 'app-shop-list',
@@ -12,9 +12,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ShopListComponent implements OnInit {
-
-  shopList: any = [];
-  searchList: any = [];
+  shopList: Shop[] = [];
+  searchList: Shop[] = [];
   pages: number = 1;
   orderName : string = "(croissant)";
   orderDate : string = "(croissant)";
@@ -29,27 +28,32 @@ export class ShopListComponent implements OnInit {
   ngOnInit() {
     this.loadShops();
   }
-  constructor(
-    public shopService: ShopService
-  ){ }
-   // shops list
-   loadShops() {
-    return this.shopService.GetShops().subscribe((data: {}) => {
-      this.shopList = data;
+  constructor(public shopService: ShopService) {}
+  // shops list
+  loadShops() {
+    this.shopService.GetShops().subscribe((shops) => {
+      this.shopList.push(...shops);
       this.searchList = Array.from(this.shopList);
-    })
-    }
-    // Delete shop
-    deleteShop(data: { name: string; id: string; }){
-      var index = this.shopList.map((shop: { name: string; }) => {return shop.name}).indexOf(data.name);
-       return this.shopService.DeleteShop(data.id).subscribe(res => {
-        this.shopList.splice(index, 1)
-         console.log('Shop supprimée!')
-       })    
-    }
-    onSubmit(event: any) {      
-      this.researchShop(event.target.search.value);
-    }
+    });
+  }
+  // Delete shop
+  deleteShop(data: Shop) {
+    var index = this.shopList
+      .map((shop: { name: string }) => {
+        return shop.name;
+      })
+      .indexOf(data.name);
+    return this.shopService.DeleteShop(data.id).subscribe((res) => {
+      this.shopList.splice(index, 1);
+      console.log('Shop supprimée!');
+    });
+  }
+  onSubmit(event: SubmitEvent) {
+    if (event.target === null) return;
+    const target = event.target as HTMLFormElement;
+    const searchForm = target.childNodes[0] as HTMLInputElement;
+    this.researchShop(searchForm.value);
+  }
 
 
 
@@ -110,15 +114,15 @@ export class ShopListComponent implements OnInit {
 
       this.sortNbDate = -this.sortNbDate;
 
-      this.shopList.sort( (a: { creationDate : Date; }, b: { creationDate: Date; }) => {
+      this.shopList.sort((a, b) => {
         if (a.creationDate < b.creationDate) {
           return -this.sortNbDate;
         } else {
           return this.sortNbDate;
         }
-    });
-
-
+      });
+    } else if (sortingBy == 'nbProducts') {
+      //Faire par nombre de Produits
     }
     
 
@@ -134,7 +138,7 @@ export class ShopListComponent implements OnInit {
 
       this.sortNbProd = -this.sortNbProd;
 
-      this.shopList.sort( (a: { nbProducts: number; }, b: { nbProducts: number; }) => {
+      this.shopList.sort( (a, b) => {
         if (a.nbProducts < b.nbProducts) {
           return -this.sortNbProd;
         } else {

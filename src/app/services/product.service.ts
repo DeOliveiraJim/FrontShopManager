@@ -1,29 +1,28 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { product } from '../shared/product';
+import { Product } from '../shared/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
-     // Base url
-     baseurl = environment.baseurl;
-     constructor(private http: HttpClient) {}
-     // Http Headers
-     httpOptions = {
-       headers: new HttpHeaders({
-         'Content-Type': 'application/json',
-       }),
-     };
+  // Base url
+  baseurl = environment.baseurl;
+  constructor(private http: HttpClient) {}
+  // Http Headers
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
 
   //POST
-  CreateProduct(idShop: string,data: any): Observable<product> {
+  CreateProduct(idShop: string, data: any): Observable<Product> {
     return this.http
-      .post<product>(
+      .post<Product>(
         this.baseurl + '/shops/' + idShop + '/products/',
         JSON.stringify(data),
         this.httpOptions
@@ -31,26 +30,30 @@ export class ProductService {
       .pipe(retry(1), catchError(this.errorHandler));
   }
 
-
-
   // GET
-  GetProducts(idShop: string): Observable<product> {
+  GetProducts(idShop: string): Observable<Product[]> {
     return this.http
-      .get<product>(this.baseurl + '/shops/' + idShop + '/products')
+      .get<Product[]>(this.baseurl + '/shops/' + idShop + '/products')
       .pipe(retry(1), catchError(this.errorHandler));
   }
 
   // GET
-  GetProduct(idShop: string, idProduct : string): Observable<product> {
-      return this.http
-        .get<product>(this.baseurl + '/shops/' + idShop + '/products/' + idProduct)
-        .pipe(retry(1), catchError(this.errorHandler));
+  GetProduct(idShop: string, idProduct: string): Observable<Product> {
+    return this.http
+      .get<Product>(
+        this.baseurl + '/shops/' + idShop + '/products/' + idProduct
+      )
+      .pipe(retry(1), catchError(this.errorHandler));
   }
 
   //PATCH
-  UpdateProduct(idShop: string,idProduct : string, data: any): Observable<product> {
+  UpdateProduct(
+    idShop: string,
+    idProduct: string,
+    data: any
+  ): Observable<Product> {
     return this.http
-      .patch<product>(
+      .patch<Product>(
         this.baseurl + '/shops/' + idShop + '/products/' + idProduct,
         JSON.stringify(data),
         this.httpOptions
@@ -59,15 +62,21 @@ export class ProductService {
   }
 
   // DELETE
-  DeleteShop(idShop: string,idProduct : string) {
-      return this.http
-        .delete<product>(this.baseurl + '/shops/' + idShop + '/products/' + idProduct,
-         this.httpOptions)
-        .pipe(retry(1), catchError(this.errorHandler));
+  DeleteShop(idShop: string, idProduct: string) {
+    return this.http
+      .delete<Product>(
+        this.baseurl + '/shops/' + idShop + '/products/' + idProduct,
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandler));
   }
 
-   // Error handling
-   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
+  // Error handling
+  errorHandler(error: {
+    error: { message: string };
+    status: any;
+    message: any;
+  }) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
@@ -81,10 +90,4 @@ export class ProductService {
       return errorMessage;
     });
   }
-
-
-
-  }
-
-
-
+}
