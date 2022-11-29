@@ -22,6 +22,15 @@
           <button class="btn btn-primary float-end" type="button"
             [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
             produit</button>
+            <button class="btn btn-success dropdown-toggle me-1" type="button" id="dropdownMenuTranslate"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            {{traduct}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button class="dropdown-item" type="button" (click)="translate('en')">English</button>
+              <button class="dropdown-item" type="button" (click)="translate('fr')">Français</button>
+              <button class="dropdown-item" type="button" (click)="translate('ja')">Japonais</button>
+            </div>
         </div>
 
         <table class="table">

@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GoogletranslateService } from 'src/app/services/googletranslate.service';
 import { ProductService } from 'src/app/services/product.service';
+import { GoogleObj } from 'src/app/shared/google-obj';
 import { Product } from 'src/app/shared/product';
 
 @Component({
@@ -18,14 +20,20 @@ export class ProductListComponent implements OnInit {
   orderNbProd: string = '(croissant)';
   sortNbName: number = -1;
   sortNbPrice: number = -1;
+  traduct : string;
 
   constructor(
     public productService: ProductService,
     private actRoute: ActivatedRoute,
     private ngZone: NgZone,
-    private router: Router
+    private router: Router,
+    private google: GoogletranslateService
   ) {
     this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
+    this.traduct = "Traduire";
+    this.orderName = '(croissant)';
+    this.orderPrice = '(croissant)';
+    this.orderNbProd = '(croissant)';
   }
 
   ngOnInit(): void {
@@ -128,4 +136,29 @@ export class ProductListComponent implements OnInit {
       });
     }
   }
+
+  translate(lang : string) {
+    this.productList = Array.from(this.searchList);
+    this.productList.forEach(p => {
+      var googleObj: GoogleObj = {q: p.name,target: lang};
+      this.google.translate(googleObj).subscribe((res : any) => {
+        p.name = res.data.translations[0].translatedText;   
+      });
+      if(p.description != null) {
+        googleObj = {q: p.description,target: lang};
+        this.google.translate(googleObj).subscribe((res : any) => {
+          p.description = res.data.translations[0].translatedText;   
+        });
+      }      
+    });  
+    var googleObj: GoogleObj = {q: this.traduct,target: lang};
+    this.google.translate(googleObj).subscribe((res : any) => {
+      this.traduct = res.data.translations[0].translatedText;   
+    });
+
+  }
+
+  
+
+
 }
