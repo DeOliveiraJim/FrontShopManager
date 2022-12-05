@@ -18,7 +18,6 @@ export class ProductListComponent implements OnInit {
   orderNbProd: string = '(croissant)';
   sortNbName: number = -1;
   sortNbPrice: number = -1;
-  traduct : string;
 
   constructor(
     public productService: ProductService,
@@ -27,10 +26,6 @@ export class ProductListComponent implements OnInit {
     private router: Router
   ) {
     this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
-    this.traduct = "Traduire";
-    this.orderName = '(croissant)';
-    this.orderPrice = '(croissant)';
-    this.orderNbProd = '(croissant)';
   }
 
   ngOnInit(): void {
