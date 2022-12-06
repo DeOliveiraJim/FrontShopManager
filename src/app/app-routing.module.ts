@@ -11,18 +11,52 @@ import { ShopEditComponent } from './components/shop-edit/shop-edit.component';
 import { ShopListComponent } from './components/shop-list/shop-list.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/shops' },
-  { path: 'shops/add', component: ShopAddComponent },
-  { path: 'shops/edit/:id', component: ShopEditComponent },
-  { path: 'shops', component: ShopListComponent },
-  { path: 'categories/add', component: CategoryAddComponent },
-  { path: 'categories/edit/:id', component: CategoryEditComponent },
-  { path: 'categories', component: CategoryListComponent },
-  { path: 'shops/:id/products', component: ProductListComponent },
+
+  {
+    path: 'shops',
+    component: ShopListComponent,
+    data: { animation: { x: 0, y: 0 } },
+  },
+  {
+    path: 'shops/add',
+    component: ShopAddComponent,
+    data: { animation: { x: 0, y: 1 } },
+  },
+  {
+    path: 'shops/edit/:id',
+    component: ShopEditComponent,
+    data: { animation: { x: 0, y: 1 } },
+  },
+  {
+    path: 'shops/:id/products',
+    component: ProductListComponent,
+    data: { animation: { x: 0, y: 1 } },
+  },
   {
     path: 'shops/edit/:id/products/edit/:idProduct',
     component: ProductEditComponent,
+    data: { animation: { x: 0, y: 2 } },
   },
-  { path: 'shops/:id/products/add', component: ProductAddComponent },
+  {
+    path: 'shops/:id/products/add',
+    component: ProductAddComponent,
+    data: { animation: { x: 0, y: 2 } },
+  },
+  {
+    path: 'categories',
+    component: CategoryListComponent,
+    data: { animation: { x: 1, y: 0 } },
+  },
+  {
+    path: 'categories/add',
+    component: CategoryAddComponent,
+    data: { animation: { x: 1, y: 1 } },
+  },
+  {
+    path: 'categories/edit/:id',
+    component: CategoryEditComponent,
+    data: { animation: { x: 1, y: 1 } },
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
