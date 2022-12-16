@@ -1,2 +1,5 @@
 <app-navigation-bar></app-navigation-bar>
-<router-outlet></router-outlet>
+<!-- The last trigger have the highest priority -->
+<div [@routeAnimationY]="getRouteAnimationDataY()" [@routeAnimationX]="getRouteAnimationDataX()">
+    <router-outlet></router-outlet>
+</div>

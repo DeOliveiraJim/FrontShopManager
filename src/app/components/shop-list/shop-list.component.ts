@@ -23,7 +23,7 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
   sortNbName: number = -1;
   sortNbDate: number = -1;
   sortNbProd: number = -1;
-  searchByConge: boolean = false;
+  searchByConge: 'null' | 'false' | 'true' = 'null';
 
   ngOnInit() {
     this.loadShops();
@@ -75,26 +75,20 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
 
     var dateBetween2 = new Date((<HTMLInputElement>document.getElementById('dateBetweenSearch2')).value);
 
-    this.searchByConge = (<HTMLInputElement>document.getElementById('congeSearch')).checked;
+    this.searchByConge = <'null' | 'true' | 'false'>(<HTMLSelectElement>document.getElementById('congeSearch')).value;
 
-    this.shopList = Array.from(this.searchList);
-    while (this.shopList.length > 1) {
-      this.shopList.pop();
-    }
-    var shop = this.searchList.find(
-      (shop: { name: string; vacation: boolean; creationDate: Date }) =>
-        shop.name == shopName &&
-        shop.vacation == this.searchByConge &&
-        (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
-        (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
-        (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
-          ? true
-          : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2)
-    );
-    if (shop != undefined) {
-      this.shopList.unshift(shop);
-    }
-    this.shopList.pop();
+    this.shopList = Array.from(this.searchList)
+      .filter((shop: { name: string; vacation: boolean; creationDate: Date }) =>
+        shop.name.includes(shopName) && this.searchByConge !== 'null'
+          ? shop.vacation === (this.searchByConge === 'false' ? false : true)
+          : true &&
+            (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
+            (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
+            (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
+              ? true
+              : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2)
+      )
+      .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
 
   resetSearch() {
