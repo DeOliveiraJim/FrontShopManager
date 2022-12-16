@@ -5,46 +5,62 @@ import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Category } from 'src/app/shared/category';
 import { environment } from 'src/environments/environment';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-product-edit',
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css'],
 })
-export class ProductEditComponent implements OnInit {
+export class ProductEditComponent extends AbstractComponent implements OnInit {
   allCategoriesList: Category[] = [];
   updateProductForm!: FormGroup;
   private idShop: string;
   private idProduct: string;
-  baseurl: string = environment.baseurl;
 
   constructor(
     private actRoute: ActivatedRoute,
     public productService: ProductService,
     public fb: FormBuilder,
-    private ngZone: NgZone,
-    private router: Router,
-    public categoryService: CategoryService
+    public categoryService: CategoryService,
+    public override ngZone: NgZone,
+    public override router: Router
   ) {
+    super(ngZone, router);
+
     this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
     this.idProduct = this.actRoute.snapshot.paramMap.get('idProduct')!;
-    this.categoryService.GetCategorys().subscribe((data) => {
-      this.allCategoriesList = data;
+  }
+
+  ngOnInit(): void {
+    this.updateForm();
+  }
+
+  getCategories() {
+    this.categoryService.GetCategories().subscribe({
+      next: (data) => {
+        this.allCategoriesList = data;
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+      },
     });
-    this.productService
-      .GetProduct(this.idShop, this.idProduct)
-      .subscribe((data) => {
+  }
+
+  setFormWithProducts() {
+    this.productService.GetProduct(this.idShop, this.idProduct).subscribe({
+      next: (data) => {
         this.updateProductForm = this.fb.group({
           name: [data.name],
           price: [data.price],
           description: [data.description == null ? ' ' : data.description],
           categories: [],
         });
-      });
-  }
-
-  ngOnInit(): void {
-    this.updateForm();
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+      },
+    });
   }
 
   updateForm() {
@@ -57,17 +73,15 @@ export class ProductEditComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.updateProductForm.value.description?.trim().length == 0)
-      this.updateProductForm.value.description = null;
-    console.log(this.updateProductForm.value);
-    this.productService
-      .UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value)
-      .subscribe((res) => {
-        console.log('product édité!');
+    if (this.updateProductForm.value.description?.trim().length == 0) this.updateProductForm.value.description = null;
+    this.productService.UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value).subscribe({
+      next: (data) => {
         var id = this.actRoute.snapshot.paramMap.get('id')!;
-        this.ngZone.run(() =>
-          this.router.navigateByUrl('/shops/' + id + '/products')
-        );
-      });
+        this.ngZone.run(() => this.router.navigateByUrl('/shops/' + id + '/products'));
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+      },
+    });
   }
 }

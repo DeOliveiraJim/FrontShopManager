@@ -35,10 +35,8 @@ export class CategoryEditComponent implements OnInit {
   }
   submitForm() {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.categoryService
-      .UpdateCategory(id, this.updateCategoryForm.value)
-      .subscribe(() => {
-        this.ngZone.run(() => this.router.navigateByUrl('/categories'));
-      });
+    this.categoryService.UpdateCategory(id, this.updateCategoryForm.value).subscribe(() => {
+      this.ngZone.run(() => this.router.navigateByUrl('/categories'));
+    });
   }
 }

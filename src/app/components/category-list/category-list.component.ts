@@ -15,12 +15,12 @@ export class CategoryListComponent implements OnInit {
   searchList: Category[] = [];
 
   ngOnInit() {
-    this.loadCategorys();
+    this.loadCategories();
   }
   constructor(public categoryService: CategoryService) {}
   // categorys list
-  loadCategorys() {
-    return this.categoryService.GetCategorys().subscribe((data) => {
+  loadCategories() {
+    return this.categoryService.GetCategories().subscribe((data) => {
       this.categoryList.push(...data);
       this.searchList = Array.from(this.categoryList);
     });
@@ -50,9 +50,7 @@ export class CategoryListComponent implements OnInit {
     while (this.categoryList.length > 1) {
       this.categoryList.pop();
     }
-    var category = this.searchList.find(
-      (category: { name: string }) => category.name == categoryName
-    );
+    var category = this.searchList.find((category: { name: string }) => category.name == categoryName);
     if (category != undefined) {
       this.categoryList.unshift(category);
     }

@@ -28,15 +28,10 @@ export class ProductAddComponent implements OnInit {
     });
   }
   submitForm() {
-    if (this.productForm.value.description?.trim().length == 0)
-      this.productForm.value.description = null;
+    if (this.productForm.value.description?.trim().length == 0) this.productForm.value.description = null;
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.productService
-      .CreateProduct(id, this.productForm.value)
-      .subscribe((res) => {
-        this.ngZone.run(() =>
-          this.router.navigateByUrl('/shops/' + id + '/products')
-        );
-      });
+    this.productService.CreateProduct(id, this.productForm.value).subscribe((res) => {
+      this.ngZone.run(() => this.router.navigateByUrl('/shops/' + id + '/products'));
+    });
   }
 }

@@ -1,16 +1,20 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { Category } from 'src/app/shared/category';
 import { Product } from 'src/app/shared/product';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent extends AbstractComponent implements OnInit {
   productList: Product[] = [];
   searchList: Product[] = [];
+  categories: Category[] = [];
   pages: number = 1;
   idShop!: string;
   orderName: string = '(croissant)';
@@ -22,21 +26,41 @@ export class ProductListComponent implements OnInit {
   constructor(
     public productService: ProductService,
     private actRoute: ActivatedRoute,
-    private ngZone: NgZone,
-    private router: Router
+    private categoryService: CategoryService,
+    public override ngZone: NgZone,
+    public override router: Router
   ) {
+    super(ngZone, router);
+
     this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
   }
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    return this.categoryService.GetCategories().subscribe({
+      next: (data) => {
+        this.categories.push(...data);
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/');
+      },
+    });
   }
 
   // products list
   loadProducts() {
-    return this.productService.GetProducts(this.idShop).subscribe((data) => {
-      this.productList.push(...data);
-      this.searchList = Array.from(this.productList);
+    return this.productService.GetProducts(this.idShop).subscribe({
+      next: (data) => {
+        this.productList.push(...data);
+        this.searchList = Array.from(this.productList);
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/');
+      },
     });
   }
 
@@ -47,26 +71,22 @@ export class ProductListComponent implements OnInit {
         return shop.name;
       })
       .indexOf(data.name);
-    return this.productService
-      .DeleteShop(this.idShop, data.id)
-      .subscribe((res) => {
+    return this.productService.DeleteShop(this.idShop, data.id).subscribe({
+      next: () => {
         this.productList.splice(index, 1);
-        console.log('product supprimée!');
-      });
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/');
+      },
+    });
   }
 
   redirectEditProduct(product: Product) {
-    this.ngZone.run(() =>
-      this.router.navigateByUrl(
-        'shops/edit/' + this.idShop + '/products/edit/' + product.id
-      )
-    );
+    this.redirect('shops/edit/' + this.idShop + '/products/edit/' + product.id);
   }
 
   redirectAddProduct() {
-    this.ngZone.run(() =>
-      this.router.navigateByUrl('shops/' + this.idShop + '/products/add')
-    );
+    this.redirect('shops/' + this.idShop + '/products/add');
   }
 
   onSubmit(event: SubmitEvent) {
@@ -81,9 +101,7 @@ export class ProductListComponent implements OnInit {
     while (this.productList.length > 1) {
       this.productList.pop();
     }
-    var product = this.searchList.find(
-      (product: { name: string }) => product.name == productName
-    );
+    var product = this.searchList.find((product: { name: string }) => product.name == productName);
     if (product != undefined) {
       this.productList.unshift(product);
     }
@@ -129,9 +147,8 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-
-
-  
-
-
+  filter(category: Category) {
+    this.productList = Array.from(this.searchList);
+    this.productList = this.productList.filter((product) => product.categories.find((c) => c.name == category.name));
+  }
 }

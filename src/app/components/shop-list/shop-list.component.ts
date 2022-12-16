@@ -1,6 +1,8 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-shop-list',
@@ -10,7 +12,7 @@ import { Shop } from 'src/app/shared/shop';
 @Injectable({
   providedIn: 'root',
 })
-export class ShopListComponent implements OnInit {
+export class ShopListComponent extends AbstractComponent implements OnInit {
   shopList: Shop[] = [];
   searchList: Shop[] = [];
   pages: number = 1;
@@ -26,12 +28,19 @@ export class ShopListComponent implements OnInit {
   ngOnInit() {
     this.loadShops();
   }
-  constructor(public shopService: ShopService) {}
+  constructor(public shopService: ShopService, public override ngZone: NgZone, public override router: Router) {
+    super(ngZone, router);
+  }
   // shops list
   loadShops() {
-    this.shopService.GetShops().subscribe((shops) => {
-      this.shopList.push(...shops);
-      this.searchList = Array.from(this.shopList);
+    this.shopService.GetShops().subscribe({
+      next: (shops) => {
+        this.shopList.push(...shops);
+        this.searchList = Array.from(this.shopList);
+      },
+      error: (err) => {
+        this.showErrorAlert(err, '/shops');
+      },
     });
   }
   // Delete shop
@@ -41,9 +50,13 @@ export class ShopListComponent implements OnInit {
         return shop.name;
       })
       .indexOf(data.name);
-    return this.shopService.DeleteShop(data.id).subscribe((res) => {
-      this.shopList.splice(index, 1);
-      console.log('Shop supprimée!');
+    return this.shopService.DeleteShop(data.id).subscribe({
+      next: (shops) => {
+        this.shopList.splice(index, 1);
+      },
+      error: (err) => {
+        this.showErrorAlert(err, '/shops');
+      },
     });
   }
   onSubmit(event: SubmitEvent) {
@@ -54,27 +67,15 @@ export class ShopListComponent implements OnInit {
   }
 
   researchShop(shopName: string) {
-    var dateAfter = new Date( (<HTMLInputElement>(
-      document.getElementById('dateAfterSearch')
-    )).value);
+    var dateAfter = new Date((<HTMLInputElement>document.getElementById('dateAfterSearch')).value);
 
-    var dateBefore = new Date((<HTMLInputElement>(
-      document.getElementById('dateBeforeSearch')
-    )).value);
+    var dateBefore = new Date((<HTMLInputElement>document.getElementById('dateBeforeSearch')).value);
 
-    var dateBetween1 = new Date((<HTMLInputElement>(
-      document.getElementById('dateBetweenSearch1')
-    )).value);
+    var dateBetween1 = new Date((<HTMLInputElement>document.getElementById('dateBetweenSearch1')).value);
 
-    var dateBetween2 = new Date((<HTMLInputElement>(
-      document.getElementById('dateBetweenSearch2')
-    )).value);   
+    var dateBetween2 = new Date((<HTMLInputElement>document.getElementById('dateBetweenSearch2')).value);
 
-    this.searchByConge = (<HTMLInputElement>(
-      document.getElementById('congeSearch')
-    )).checked;
-
-    console.log(dateBefore.toString().length)
+    this.searchByConge = (<HTMLInputElement>document.getElementById('congeSearch')).checked;
 
     this.shopList = Array.from(this.searchList);
     while (this.shopList.length > 1) {
@@ -82,11 +83,13 @@ export class ShopListComponent implements OnInit {
     }
     var shop = this.searchList.find(
       (shop: { name: string; vacation: boolean; creationDate: Date }) =>
-        shop.name == shopName && shop.vacation == this.searchByConge 
-        && (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter)
-        && (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore)
-        && ((dateBetween1.toString().length == 12  &&  dateBetween2.toString().length == 12) ? true :
-               (shop.creationDate > dateBetween1 &&  shop.creationDate < dateBetween2 ) ) 
+        shop.name == shopName &&
+        shop.vacation == this.searchByConge &&
+        (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
+        (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
+        (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
+          ? true
+          : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2)
     );
     if (shop != undefined) {
       this.shopList.unshift(shop);
@@ -130,9 +133,8 @@ export class ShopListComponent implements OnInit {
           return this.sortNbDate;
         }
       });
-    } else if (sortingBy == 'nbProducts') {
-      //Faire par nombre de Produits
-    } else if (sortingBy == 'nbProducts') {
+    }
+    if (sortingBy == 'nbProducts') {
       if (this.orderNbProd == '(croissant)') {
         this.orderNbProd = '(décroissant)';
       } else {

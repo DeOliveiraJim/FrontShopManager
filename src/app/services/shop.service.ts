@@ -4,13 +4,16 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Shop } from '../shared/shop';
+import { AbstractService } from './abstract.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ShopService {
+export class ShopService extends AbstractService {
   // Base url
-  baseurl = environment.baseurl;
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) {
+    super();
+  }
   // Http Headers
   httpOptions = {
     headers: new HttpHeaders({
@@ -20,11 +23,7 @@ export class ShopService {
   // POST
   CreateShop(data: any): Observable<Shop> {
     return this.http
-      .post<Shop>(
-        this.baseurl + '/shops',
-        JSON.stringify(data),
-        this.httpOptions
-      )
+      .post<Shop>(this.baseurl + '/shops', JSON.stringify(data), this.httpOptions)
       .pipe(retry(1), catchError(this.errorHandler));
   }
   // GET
@@ -55,11 +54,7 @@ export class ShopService {
   // PATCH
   UpdateShop(id: string, data: any): Observable<Shop> {
     return this.http
-      .patch<Shop>(
-        this.baseurl + '/shops/' + id,
-        JSON.stringify(data),
-        this.httpOptions
-      )
+      .patch<Shop>(this.baseurl + '/shops/' + id, JSON.stringify(data), this.httpOptions)
       .pipe(retry(1), catchError(this.errorHandler));
   }
   // DELETE
@@ -67,24 +62,5 @@ export class ShopService {
     return this.http
       .delete<Shop>(this.baseurl + '/shops/' + id, this.httpOptions)
       .pipe(retry(1), catchError(this.errorHandler));
-  }
-  // Error handling
-  errorHandler(error: {
-    error: { message: string };
-    status: any;
-    message: any;
-  }) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
   }
 }
