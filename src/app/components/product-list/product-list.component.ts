@@ -77,17 +77,9 @@ export class ProductListComponent implements OnInit {
   }
 
   researchProduct(productName: string) {
-    this.productList = Array.from(this.searchList);
-    while (this.productList.length > 1) {
-      this.productList.pop();
-    }
-    var product = this.searchList.find(
-      (product: { name: string }) => product.name == productName
-    );
-    if (product != undefined) {
-      this.productList.unshift(product);
-    }
-    this.productList.pop();
+    this.productList = Array.from(this.searchList).filter(
+      (category: { name: string }) => category.name.includes(productName)
+    ).sort((a, b) => a.name.length < b.name.length ? -1 : 1);
   }
 
   resetSearch() {

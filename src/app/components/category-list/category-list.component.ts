@@ -42,21 +42,13 @@ export class CategoryListComponent implements OnInit {
     if (event.target === null) return;
     const target = event.target as HTMLFormElement;
     const searchForm = target.childNodes[0] as HTMLInputElement;
-    this.researchShop(searchForm.value);
+    this.research(searchForm.value);
   }
 
-  researchShop(categoryName: string) {
-    this.categoryList = Array.from(this.searchList);
-    while (this.categoryList.length > 1) {
-      this.categoryList.pop();
-    }
-    var category = this.searchList.find(
-      (category: { name: string }) => category.name == categoryName
-    );
-    if (category != undefined) {
-      this.categoryList.unshift(category);
-    }
-    this.categoryList.pop();
+  research(categoryName: string) {
+    this.categoryList = Array.from(this.searchList).filter(
+      (category: { name: string }) => category.name.includes(categoryName)
+    ).sort((a, b) => a.name.length < b.name.length ? -1 : 1);
   }
 
   resetSearch() {
