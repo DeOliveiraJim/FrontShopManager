@@ -15,12 +15,12 @@ export class CategoryListComponent implements OnInit {
   searchList: Category[] = [];
 
   ngOnInit() {
-    this.loadCategorys();
+    this.loadCategories();
   }
   constructor(public categoryService: CategoryService) {}
   // categorys list
-  loadCategorys() {
-    return this.categoryService.GetCategorys().subscribe((data) => {
+  loadCategories() {
+    return this.categoryService.GetCategories().subscribe((data) => {
       this.categoryList.push(...data);
       this.searchList = Array.from(this.categoryList);
     });
@@ -46,9 +46,9 @@ export class CategoryListComponent implements OnInit {
   }
 
   research(categoryName: string) {
-    this.categoryList = Array.from(this.searchList).filter(
-      (category: { name: string }) => category.name.includes(categoryName)
-    ).sort((a, b) => a.name.length < b.name.length ? -1 : 1);
+    this.categoryList = Array.from(this.searchList)
+      .filter((category: { name: string }) => category.name.includes(categoryName))
+      .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
 
   resetSearch() {

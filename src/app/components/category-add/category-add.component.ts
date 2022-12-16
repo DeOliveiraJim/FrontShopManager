@@ -25,11 +25,9 @@ export class CategoryAddComponent implements OnInit {
     });
   }
   submitForm() {
-    this.categoryService
-      .CreateCategory(this.categoryForm.value)
-      .subscribe((res) => {
-        console.log('Shop ajoutée!');
-        this.ngZone.run(() => this.router.navigateByUrl('/categories'));
-      });
+    this.categoryService.CreateCategory(this.categoryForm.value).subscribe((res) => {
+      console.log('Shop ajoutée!');
+      this.ngZone.run(() => this.router.navigateByUrl('/categories'));
+    });
   }
 }

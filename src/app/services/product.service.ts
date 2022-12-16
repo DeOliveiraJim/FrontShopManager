@@ -4,14 +4,15 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Product } from '../shared/product';
+import { AbstractService } from './abstract.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
-  // Base url
-  baseurl = environment.baseurl;
-  constructor(private http: HttpClient) {}
+export class ProductService extends AbstractService {
+  constructor(private http: HttpClient) {
+    super();
+  }
   // Http Headers
   httpOptions = {
     headers: new HttpHeaders({
@@ -22,11 +23,7 @@ export class ProductService {
   //POST
   CreateProduct(idShop: string, data: any): Observable<Product> {
     return this.http
-      .post<Product>(
-        this.baseurl + '/shops/' + idShop + '/products/',
-        JSON.stringify(data),
-        this.httpOptions
-      )
+      .post<Product>(this.baseurl + '/shops/' + idShop + '/products/', JSON.stringify(data), this.httpOptions)
       .pipe(retry(1), catchError(this.errorHandler));
   }
 
@@ -40,18 +37,12 @@ export class ProductService {
   // GET
   GetProduct(idShop: string, idProduct: string): Observable<Product> {
     return this.http
-      .get<Product>(
-        this.baseurl + '/shops/' + idShop + '/products/' + idProduct
-      )
+      .get<Product>(this.baseurl + '/shops/' + idShop + '/products/' + idProduct)
       .pipe(retry(1), catchError(this.errorHandler));
   }
 
   //PATCH
-  UpdateProduct(
-    idShop: string,
-    idProduct: string,
-    data: any
-  ): Observable<Product> {
+  UpdateProduct(idShop: string, idProduct: string, data: any): Observable<Product> {
     return this.http
       .patch<Product>(
         this.baseurl + '/shops/' + idShop + '/products/' + idProduct,
@@ -64,30 +55,7 @@ export class ProductService {
   // DELETE
   DeleteShop(idShop: string, idProduct: string) {
     return this.http
-      .delete<Product>(
-        this.baseurl + '/shops/' + idShop + '/products/' + idProduct,
-        this.httpOptions
-      )
+      .delete<Product>(this.baseurl + '/shops/' + idShop + '/products/' + idProduct, this.httpOptions)
       .pipe(retry(1), catchError(this.errorHandler));
-  }
-
-  // Error handling
-  errorHandler(error: {
-    error: { message: string };
-    status: any;
-    message: any;
-  }) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    alert(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
   }
 }

@@ -20,6 +20,7 @@ import { ShopListComponent } from './components/shop-list/shop-list.component';
 import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { ShopService } from './services/shop.service';
+import { AbstractComponent } from './components/abstract/abstract.component';
 
 @NgModule({
   declarations: [
