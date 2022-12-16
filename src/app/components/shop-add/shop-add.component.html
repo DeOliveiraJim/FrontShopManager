@@ -6,15 +6,73 @@
             <form [formGroup]="shopForm" (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom de la boutique</label>
-                    <input type="text" formControlName="name" class="form-control" maxlength="30">
+                    <input type="text" formControlName="name" class="form-control" maxlength="30" required>
                 </div>
                 <div class="form-group mb-2">
                     <label>Horaires de la boutique</label>
-                    <input type="text" formControlName="openingTime" class="form-control">
+                    <div id="horaires" class="border rounded p-2 my-1">
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label>Début</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                            <div class="col">
+                                <label>Fin</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="0">
+                                    Lundi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="1">
+                                    Mardi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="2">
+                                    Mercredi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="3">
+                                    Jeudi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="4">
+                                    Vendredi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="5">
+                                    Samedi
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="6">
+                                    Dimanche
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info">Ajouter des horaires</button>
                 </div>
                 <div class="form-check mb-2">
-                    <input type="checkbox" formControlName="vacation" class="form-check-input">
-                    <label class="form-check-label">Congé de la boutique</label>
+                    <label class="form-check-label">
+                        <input type="checkbox" formControlName="vacation" class="form-check-input">
+                        Congé de la boutique
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
             </form>
