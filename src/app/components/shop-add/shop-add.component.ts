@@ -37,8 +37,8 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
   }
 
   constructor(
-    public fb: FormBuilder,
-    public shopService: ShopService,
+    private fb: FormBuilder,
+    private shopService: ShopService,
     public override ngZone: NgZone,
     public override router: Router
   ) {
