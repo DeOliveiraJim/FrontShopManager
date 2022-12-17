@@ -3,18 +3,23 @@
         <!-- Form -->
         <div class="col-md-12">
             <h3>Ajout d'une boutique</h3>
-            <form [formGroup]="shopForm" (ngSubmit)="submitForm()">
+            <form (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom de la boutique</label>
-                    <input type="text" formControlName="name" class="form-control" maxlength="30">
+                    <input type="text" [formControl]="shopName" class="form-control" maxlength="30" required>
                 </div>
                 <div class="form-group mb-2">
                     <label>Horaires de la boutique</label>
-                    <input type="text" formControlName="openingTime" class="form-control">
+                    <div>
+                        <ng-container #container></ng-container>
+                    </div>
+                    <button type="button" class="btn btn-info" (click)="addOpeningTime()">Ajouter des horaires</button>
                 </div>
                 <div class="form-check mb-2">
-                    <input type="checkbox" formControlName="vacation" class="form-check-input">
-                    <label class="form-check-label">Congé de la boutique</label>
+                    <label class="form-check-label">
+                        <input type="checkbox" [formControl]="vacation" class="form-check-input">
+                        Congé de la boutique
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
             </form>

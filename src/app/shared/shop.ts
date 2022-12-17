@@ -1,7 +1,11 @@
 export class Shop {
   id!: number;
   name!: string;
-  openingTime!: string;
+  openingTimes!: {
+    days: (string | number)[];
+    start: string;
+    end: string;
+  }[];
   vacation!: boolean;
   creationDate!: Date;
   nbCategories!: number;

@@ -17,10 +17,10 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ShopAddComponent } from './components/shop-add/shop-add.component';
 import { ShopEditComponent } from './components/shop-edit/shop-edit.component';
 import { ShopListComponent } from './components/shop-list/shop-list.component';
+import { ShopOpeningTimeComponent } from './components/shop-opening-time/shop-opening-time.component';
 import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { ShopService } from './services/shop.service';
-import { AbstractComponent } from './components/abstract/abstract.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +35,7 @@ import { AbstractComponent } from './components/abstract/abstract.component';
     CategoryAddComponent,
     CategoryListComponent,
     CategoryEditComponent,
+    ShopOpeningTimeComponent,
   ],
   imports: [
     RouterModule,
