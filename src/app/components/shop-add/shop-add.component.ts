@@ -49,6 +49,20 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
     let shop = new Shop();
     shop.name = <string>this.shopName.value;
     shop.vacation = this.vacation.value === null ? false : this.vacation.value;
+    shop.openingTimes = [];
+    for (let x of this.openingTimes) {
+      let ot = x.instance;
+      let days = [];
+      for (let i = 0; i < ot.checkboxGroup.value.controls!.length; i++) {
+        if (ot.checkboxGroup.value.controls![i]) days.push(i);
+      }
+      shop.openingTimes.push({
+        days: days,
+        start: <string>ot.start.value,
+        end: <string>ot.end.value,
+      });
+    }
+
     this.shopService.CreateShop(shop).subscribe({
       next: (res) => {
         this.showSuccesAlert('/shops/add');
