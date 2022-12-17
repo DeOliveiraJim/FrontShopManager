@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { Shop } from '../shared/shop';
 import { AbstractService } from './abstract.service';
 @Injectable({
@@ -23,7 +22,11 @@ export class ShopService extends AbstractService {
   // POST
   CreateShop(data: any): Observable<Shop> {
     return this.http
-      .post<Shop>(this.baseurl + '/shops', JSON.stringify(data), this.httpOptions)
+      .post<Shop>(
+        this.baseurl + '/shops',
+        JSON.stringify(data),
+        this.httpOptions
+      )
       .pipe(retry(1), catchError(this.errorHandler));
   }
   // GET
@@ -54,7 +57,11 @@ export class ShopService extends AbstractService {
   // PATCH
   UpdateShop(id: string, data: any): Observable<Shop> {
     return this.http
-      .patch<Shop>(this.baseurl + '/shops/' + id, JSON.stringify(data), this.httpOptions)
+      .patch<Shop>(
+        this.baseurl + '/shops/' + id,
+        JSON.stringify(data),
+        this.httpOptions
+      )
       .pipe(retry(1), catchError(this.errorHandler));
   }
   // DELETE

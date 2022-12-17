@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { AbstractComponent } from '../abstract/abstract.component';
@@ -10,11 +10,7 @@ import { AbstractComponent } from '../abstract/abstract.component';
   styleUrls: ['./shop-edit.component.css'],
 })
 export class ShopEditComponent extends AbstractComponent implements OnInit {
-  updateShopForm!: FormGroup<{
-    name: FormControl<string | null>;
-    openingTime: FormControl<string | null>;
-    vacation: FormControl<boolean | null>;
-  }>;
+  updateShopForm!: FormGroup;
 
   ngOnInit() {
     this.updateForm();
@@ -32,7 +28,7 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
     this.shopService.GetShop(id).subscribe((data) => {
       this.updateShopForm = this.fb.group({
         name: [data.name],
-        openingTime: [data.openingTime],
+        openingTimes: [data.openingTimes],
         vacation: [data.vacation],
       });
     });
