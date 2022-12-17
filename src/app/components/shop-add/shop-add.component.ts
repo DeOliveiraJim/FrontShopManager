@@ -75,6 +75,13 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
 
   addOpeningTime() {
     let c = this.container.createComponent(ShopOpeningTimeComponent);
+    c.instance.closeItem.subscribe(() => {
+      let i = this.openingTimes.findIndex((x) => x == c);
+      if (i !== -1) {
+        this.openingTimes.splice(i);
+      }
+      c.destroy();
+    });
     this.openingTimes.push(c);
   }
 }

@@ -84,16 +84,23 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
 
     this.shopService.UpdateShop(this.id, shop).subscribe({
       next: (res) => {
-        this.showSuccesAlert('/shops/add');
+        this.showSuccesAlert('/shops/edit');
       },
       error: (err) => {
-        this.showErrorAlert(err, '/shops/add');
+        this.showErrorAlert(err, '/shops/edit');
       },
     });
   }
 
   addOpeningTime() {
     let c = this.container.createComponent(ShopOpeningTimeComponent);
+    c.instance.closeItem.subscribe(() => {
+      let i = this.openingTimes.findIndex((x) => x == c);
+      if (i !== -1) {
+        this.openingTimes.splice(i);
+      }
+      c.destroy();
+    });
     this.openingTimes.push(c);
   }
 }

@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewContainerRef,
+} from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import DAYS_LIST from './days';
 
@@ -8,6 +14,7 @@ import DAYS_LIST from './days';
   styleUrls: ['./shop-opening-time.component.css'],
 })
 export class ShopOpeningTimeComponent implements OnInit {
+  @Output() closeItem = new EventEmitter();
   DAYS_LIST = DAYS_LIST;
 
   checkboxGroup = this.fb.group({
@@ -25,8 +32,6 @@ export class ShopOpeningTimeComponent implements OnInit {
   ngOnInit(): void {}
 
   onClose() {
-    this.viewContainer.element.nativeElement.parentElement.removeChild(
-      this.viewContainer.element.nativeElement
-    );
+    this.closeItem.emit();
   }
 }
