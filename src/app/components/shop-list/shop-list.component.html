@@ -19,17 +19,17 @@
               </select>
             </div>
             <div>
-              <label for="conge">Avant une date précise : </label>              
-               <input type="datetime-local" id="dateBeforeSearch" name="dateBeforeSearch" > 
+              <label for="conge">Avant une date précise : </label>
+              <input type="datetime-local" id="dateBeforeSearch" name="dateBeforeSearch">
             </div>
             <div>
               <label for="conge">Après une date : </label>
-              <input type="datetime-local" id="dateAfterSearch" name="dateAfterSearch" >            
+              <input type="datetime-local" id="dateAfterSearch" name="dateAfterSearch">
             </div>
             <div>
               <label for="conge">Entre deux dates précises : </label>
-              <input type="datetime-local" id="dateBetweenSearch1" name="dateBetweenSearch1" >
-              <input type="datetime-local" id="dateBetweenSearch2" name="dateBetweenSearch2" >              
+              <input type="datetime-local" id="dateBetweenSearch1" name="dateBetweenSearch1">
+              <input type="datetime-local" id="dateBetweenSearch2" name="dateBetweenSearch2">
             </div>
           </div>
           <button type="submit" class="btn btn-info">Rechercher</button>
@@ -69,7 +69,7 @@
             <tr *ngFor="let shop of shopList | paginate: { itemsPerPage: 5, currentPage: pages }">
               <th scope="row">{{shop.id}}</th>
               <td>{{shop.name}}</td>
-              <td>{{shop.openingTime}}</td>
+              <td>{{shop.openingTimes}}</td>
               <td *ngIf="shop.vacation">Oui</td>
               <td *ngIf="!shop.vacation">Non</td>
               <td>{{shop.creationDate.toLocaleString(undefined, { year: 'numeric', month: 'numeric',
