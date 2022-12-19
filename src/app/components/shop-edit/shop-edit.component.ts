@@ -55,6 +55,7 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
           otc.checkboxGroup.controls.controls.controls[i].setValue(true);
         }
         if (ot.start.length === 4) ot.start = '0' + ot.start;
+        if (ot.end.length === 4) ot.end = '0' + ot.end;
         otc.start.setValue(ot.start);
         otc.end.setValue(ot.end);
         this.openingTimes.push(openingTimeComponentRef);
