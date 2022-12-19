@@ -61,7 +61,12 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
           name: [data.name],
           price: [data.price],
           description: [data.description == null ? ' ' : data.description],
-          categories: [[]],
+          categories: [
+            this.allCategoriesList.filter(
+              (c) =>
+                data.categories.find((sc) => sc.name == c.name) !== undefined
+            ),
+          ],
         });
       },
       error: (err) => {
