@@ -43,7 +43,6 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
   ) {
     super(ngZone, router);
     this.id = <string>this.actRoute.snapshot.paramMap.get('id');
-    console.log(this.id);
     this.shopService.GetShop(this.id).subscribe((data) => {
       for (let ot of data.openingTimes) {
         let openingTimeComponentRef = this.container.createComponent(
@@ -55,6 +54,7 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
           if (i == -1) continue;
           otc.checkboxGroup.controls.controls.controls[i].setValue(true);
         }
+        if (ot.start.length === 4) ot.start = '0' + ot.start;
         otc.start.setValue(ot.start);
         otc.end.setValue(ot.end);
         this.openingTimes.push(openingTimeComponentRef);
