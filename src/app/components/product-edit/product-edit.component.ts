@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -52,7 +52,10 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
         this.allCategoriesList.push(...cat);
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+        this.showErrorAlert(
+          err,
+          'shops/edit/' + this.idShop + '/products/' + this.idProduct
+        );
       },
     });
   }
@@ -73,7 +76,10 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+        this.showErrorAlert(
+          err,
+          'shops/edit/' + this.idShop + '/products/' + this.idProduct
+        );
       },
     });
   }
@@ -86,20 +92,25 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
       categories: [''],
     });
   }
+
   submitForm() {
     this.submitted = true;
     if (this.updateProductForm.invalid) {
       return;
     }
-    if (this.updateProductForm.value.description?.trim().length == 0) this.updateProductForm.value.description = null;
-    this.productService.UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value).subscribe({
-      next: (data) => {
-        var id = this.actRoute.snapshot.paramMap.get('id')!;
-        this.redirect('/shops/' + id + '/products');
-      },
-      error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
-      },
-    });
+    this.productService
+      .UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value)
+      .subscribe({
+        next: () => {
+          var id = this.actRoute.snapshot.paramMap.get('id')!;
+          this.redirect('/shops/' + id + '/products');
+        },
+        error: (err) => {
+          this.showErrorAlert(
+            err,
+            'shops/edit/' + this.idShop + '/products/' + this.idProduct
+          );
+        },
+      });
   }
 }
