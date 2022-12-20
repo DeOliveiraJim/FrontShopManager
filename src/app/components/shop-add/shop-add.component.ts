@@ -54,7 +54,7 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
       let ot = x.instance;
       let days = [];
       for (let i = 0; i < ot.daysForm.controls.length; i++) {
-        if (ot.daysForm.controls[i]) days.push(i);
+        if (ot.daysForm.controls[i].value) days.push(i);
       }
       shop.openingTimes.push({
         days: days,
