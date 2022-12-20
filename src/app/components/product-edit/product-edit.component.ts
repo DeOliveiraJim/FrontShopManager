@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -16,6 +16,8 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
   updateProductForm!: FormGroup;
   private idShop: string;
   private idProduct: string;
+  submitted: boolean = false;
+  productForm: any;
 
   constructor(
     private actRoute: ActivatedRoute,
@@ -37,6 +39,10 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
     this.updateForm();
   }
 
+  get ctrls() {
+    return this.updateProductForm.controls;
+  }
+
   getCategories() {
     this.categoryService.GetCategories().subscribe({
       next: (data) => {
@@ -46,10 +52,7 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
         this.allCategoriesList.push(...cat);
       },
       error: (err) => {
-        this.showErrorAlert(
-          err,
-          'shops/edit/' + this.idShop + '/products/' + this.idProduct
-        );
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
       },
     });
   }
@@ -58,47 +61,40 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
     this.productService.GetProduct(this.idShop, this.idProduct).subscribe({
       next: (data) => {
         this.updateProductForm = this.fb.group({
-          name: [data.name],
-          price: [data.price],
+          name: [data.name, Validators.required],
+          price: [data.price, Validators.required],
           description: [data.description == null ? ' ' : data.description],
           categories: [[]],
         });
       },
       error: (err) => {
-        this.showErrorAlert(
-          err,
-          'shops/edit/' + this.idShop + '/products/' + this.idProduct
-        );
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
       },
     });
   }
 
   updateForm() {
     this.updateProductForm = this.fb.group({
-      name: [''],
-      price: [''],
+      name: ['', Validators.required],
+      price: ['', Validators.required],
       description: [''],
       categories: [''],
     });
   }
   submitForm() {
-    if (this.updateProductForm.value.description?.trim().length == 0)
-      this.updateProductForm.value.description = null;
-    this.productService
-      .UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value)
-      .subscribe({
-        next: (data) => {
-          var id = this.actRoute.snapshot.paramMap.get('id')!;
-          this.ngZone.run(() =>
-            this.router.navigateByUrl('/shops/' + id + '/products')
-          );
-        },
-        error: (err) => {
-          this.showErrorAlert(
-            err,
-            'shops/edit/' + this.idShop + '/products/' + this.idProduct
-          );
-        },
-      });
+    this.submitted = true;
+    if (this.updateProductForm.invalid) {
+      return;
+    }
+    if (this.updateProductForm.value.description?.trim().length == 0) this.updateProductForm.value.description = null;
+    this.productService.UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value).subscribe({
+      next: (data) => {
+        var id = this.actRoute.snapshot.paramMap.get('id')!;
+        this.redirect('/shops/' + id + '/products');
+      },
+      error: (err) => {
+        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+      },
+    });
   }
 }
