@@ -1,7 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import DAYS_LIST from './days';
-
 @Component({
   selector: 'app-shop-opening-time',
   templateUrl: './shop-opening-time.component.html',
@@ -9,7 +7,15 @@ import DAYS_LIST from './days';
 })
 export class ShopOpeningTimeComponent implements OnInit {
   @Output() closeItem = new EventEmitter();
-  DAYS_LIST = DAYS_LIST;
+  daysList = [
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
+    'Dimanche',
+  ];
 
   checkboxGroup = this.fb.group({
     controls: this.fb.array([false, false, false, false, false, false, false]),

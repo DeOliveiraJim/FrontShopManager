@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
 import { AbstractComponent } from '../abstract/abstract.component';
-import DAYS_LIST from '../shop-opening-time/days';
 import { ShopOpeningTimeComponent } from '../shop-opening-time/shop-opening-time.component';
 
 @Component({
@@ -50,9 +49,7 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
         );
         let otc = openingTimeComponentRef.instance;
         for (let day of ot.days) {
-          let i = DAYS_LIST.findIndex((d) => d.constName == day);
-          if (i == -1) continue;
-          otc.checkboxGroup.controls.controls.controls[i].setValue(true);
+          otc.checkboxGroup.controls.controls.controls[day].setValue(true);
         }
         if (ot.start.length === 4) ot.start = '0' + ot.start;
         if (ot.end.length === 4) ot.end = '0' + ot.end;
