@@ -1,15 +1,18 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-category-edit',
   templateUrl: './category-edit.component.html',
   styleUrls: ['./category-edit.component.css'],
 })
-export class CategoryEditComponent implements OnInit {
+export class CategoryEditComponent extends AbstractComponent implements OnInit {
   updateCategoryForm!: FormGroup;
+
+  submitted = false;
 
   ngOnInit() {
     this.updateForm();
@@ -18,25 +21,40 @@ export class CategoryEditComponent implements OnInit {
     private actRoute: ActivatedRoute,
     public categoryService: CategoryService,
     public fb: FormBuilder,
-    private ngZone: NgZone,
-    private router: Router
+    ngZone: NgZone,
+    router: Router
   ) {
+    super(ngZone, router);
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.categoryService.GetCategory(id).subscribe((data) => {
-      this.updateCategoryForm = this.fb.group({
-        name: [data.name],
-      });
+    this.categoryService.GetCategory(id).subscribe({
+      next: (data) => {
+        this.updateCategoryForm = this.fb.group({
+          name: [data.name, Validators.required],
+        });
+      },
+      error: (err) => {
+        this.showErrorAlert(err, '/categories/');
+      },
     });
   }
   updateForm() {
     this.updateCategoryForm = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
     });
   }
+
+  get ctrls() {
+    return this.updateCategoryForm.controls;
+  }
+
   submitForm() {
+    this.submitted = true;
+    if (this.updateCategoryForm.invalid) {
+      return;
+    }
     var id = this.actRoute.snapshot.paramMap.get('id')!;
     this.categoryService.UpdateCategory(id, this.updateCategoryForm.value).subscribe(() => {
-      this.ngZone.run(() => this.router.navigateByUrl('/categories'));
+      this.redirect('/categories');
     });
   }
 }

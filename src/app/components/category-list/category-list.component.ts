@@ -34,7 +34,6 @@ export class CategoryListComponent implements OnInit {
       .indexOf(data.name);
     return this.categoryService.DeleteCategory(data.id).subscribe((res) => {
       this.categoryList.splice(index, 1);
-      console.log('category supprimée!');
     });
   }
 

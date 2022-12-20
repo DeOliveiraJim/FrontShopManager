@@ -1,37 +1,54 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-product-add',
   templateUrl: './product-add.component.html',
   styleUrls: ['./product-add.component.css'],
 })
-export class ProductAddComponent implements OnInit {
+export class ProductAddComponent extends AbstractComponent implements OnInit {
   productForm!: FormGroup;
+  submitted = false;
   ngOnInit() {
     this.addShop();
   }
   constructor(
     private actRoute: ActivatedRoute,
     public fb: FormBuilder,
-    private ngZone: NgZone,
-    private router: Router,
+    ngZone: NgZone,
+    router: Router,
     public productService: ProductService
-  ) {}
+  ) {
+    super(ngZone, router);
+  }
   addShop() {
     this.productForm = this.fb.group({
-      name: [''],
-      price: [''],
+      name: ['', Validators.required],
+      price: ['', Validators.required],
       description: [''],
     });
   }
+  get ctrls() {
+    return this.productForm.controls;
+  }
+
   submitForm() {
+    this.submitted = true;
+    if (this.productForm.invalid) {
+      return;
+    }
     if (this.productForm.value.description?.trim().length == 0) this.productForm.value.description = null;
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.productService.CreateProduct(id, this.productForm.value).subscribe((res) => {
-      this.ngZone.run(() => this.router.navigateByUrl('/shops/' + id + '/products'));
+    this.productService.CreateProduct(id, this.productForm.value).subscribe({
+      next: (data) => {
+        this.redirect('/shops/' + id + '/products');
+      },
+      error: (err) => {
+        this.showErrorAlert(err, '/shops/' + id + '/products');
+      },
     });
   }
 }
