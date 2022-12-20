@@ -46,6 +46,13 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
   }
 
   submitForm() {
+    let error = false;
+    for (let ot of this.openingTimes) {
+      ot.instance.submitted = true;
+      if (ot.instance.openingTimeForm.invalid) error = true;
+      if (ot.instance.openingTimeForm.controls['start'].errors) error = true;
+    }
+    if (error) return;
     let shop = new Shop();
     shop.name = <string>this.shopName.value;
     shop.vacation = this.vacation.value === null ? false : this.vacation.value;

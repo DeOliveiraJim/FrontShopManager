@@ -1,12 +1,22 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 @Component({
   selector: 'app-shop-opening-time',
   templateUrl: './shop-opening-time.component.html',
   styleUrls: ['./shop-opening-time.component.css'],
 })
 export class ShopOpeningTimeComponent implements OnInit {
+  submitted = false;
   @Output() closeItem = new EventEmitter();
+
   daysList = [
     'Lundi',
     'Mardi',
@@ -20,13 +30,13 @@ export class ShopOpeningTimeComponent implements OnInit {
   openingTimeForm!: FormGroup;
   daysForm = this.fb.array(
     [false, false, false, false, false, false, false],
-    Validators.required
+    daysValidator()
   );
 
   constructor(private fb: FormBuilder) {
     this.openingTimeForm = this.fb.group({
-      start: ['', Validators.pattern('([0-1]?\\d|2[0-3]):[0-5]\\d')],
-      end: ['', Validators.pattern('([0-1]?\\d|2[0-3]):[0-5]\\d')],
+      start: [''],
+      end: [''],
       days: this.daysForm,
     });
   }
@@ -36,4 +46,21 @@ export class ShopOpeningTimeComponent implements OnInit {
   onClose() {
     this.closeItem.emit();
   }
+
+  get ctrls() {
+    return this.openingTimeForm.controls;
+  }
+}
+
+function daysValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!(control instanceof FormArray<FormControl<boolean | null>>))
+      return { error: 'wrong control' };
+
+    let isOneTrue = false;
+    for (let x of control.controls) {
+      if (x.value) isOneTrue = true;
+    }
+    return isOneTrue ? null : { error: 'no one true' };
+  };
 }
