@@ -3,12 +3,15 @@
         <!-- Form -->
         <div class="col-md-12">
             <h3>Modification d'une catégorie</h3>
-            <form [formGroup]="updateCategoryForm" (ngSubmit)="submitForm()" novalidate>
+            <form [formGroup]="updateCategoryForm" (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom de la catégorie</label>
-                    <input type="text" formControlName="name" class="form-control" maxlength="30">
+                    <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && ctrls['name'].errors }">
+                    <div *ngIf="submitted && ctrls['name'].errors" class="invalid-feedback">
+                        <div >Nom obligatoire </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Modifier</button>
+                <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
             </form>
         </div>
     </div>
