@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-shop-opening-time',
   templateUrl: './shop-opening-time.component.html',
@@ -17,14 +17,19 @@ export class ShopOpeningTimeComponent implements OnInit {
     'Dimanche',
   ];
 
-  checkboxGroup = this.fb.group({
-    controls: this.fb.array([false, false, false, false, false, false, false]),
-  });
+  openingTimeForm!: FormGroup;
+  daysForm = this.fb.array(
+    [false, false, false, false, false, false, false],
+    Validators.required
+  );
 
-  start = new FormControl('');
-  end = new FormControl('');
-
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.openingTimeForm = this.fb.group({
+      start: ['', Validators.pattern('([0-1]?\\d|2[0-3]):[0-5]\\d')],
+      end: ['', Validators.pattern('([0-1]?\\d|2[0-3]):[0-5]\\d')],
+      days: this.daysForm,
+    });
+  }
 
   ngOnInit(): void {}
 

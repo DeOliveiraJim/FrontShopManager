@@ -1,20 +1,19 @@
-<div class="border rounded p-2 my-2">
+<div class="border rounded p-2 my-2" [formGroup]="openingTimeForm">
     <div class="row mb-1" style="position: relative;">
         <button type="button" class="closeButton btn-close" (click)="onClose()"></button>
         <div class="col">
             <label>Début</label>
-            <input type="time" class="form-control" [formControl]="start" required>
+            <input type="time" class="form-control" formControlName="start" required>
         </div>
         <div class="col">
             <label>Fin</label>
-            <input type="time" class="form-control" [formControl]="end" required>
+            <input type="time" class="form-control" formControlName="end" required>
         </div>
     </div>
     <div>
         <div class="form-check-inline" *ngFor="let day of daysList, index as i">
             <label class="form-check-label">
-                <input class="form-check-input" type="checkbox"
-                    [formControl]="checkboxGroup.controls['controls'].controls[i]">
+                <input class="form-check-input" type="checkbox" [formControl]="daysForm.controls[i]">
                 {{day}}
             </label>
         </div>

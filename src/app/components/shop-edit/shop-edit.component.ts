@@ -49,12 +49,12 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
         );
         let otc = openingTimeComponentRef.instance;
         for (let day of ot.days) {
-          otc.checkboxGroup.controls.controls.controls[day].setValue(true);
+          otc.daysForm.controls[day].setValue(true);
         }
         if (ot.start.length === 4) ot.start = '0' + ot.start;
         if (ot.end.length === 4) ot.end = '0' + ot.end;
-        otc.start.setValue(ot.start);
-        otc.end.setValue(ot.end);
+        otc.openingTimeForm.controls['start'].setValue(ot.start);
+        otc.openingTimeForm.controls['end'].setValue(ot.end);
         this.openingTimes.push(openingTimeComponentRef);
       }
       this.shopName.setValue(data.name);
@@ -70,13 +70,13 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
     for (let x of this.openingTimes) {
       let ot = x.instance;
       let days = [];
-      for (let i = 0; i < ot.checkboxGroup.value.controls!.length; i++) {
-        if (ot.checkboxGroup.value.controls![i]) days.push(i);
+      for (let i = 0; i < ot.daysForm.controls.length; i++) {
+        if (ot.daysForm.controls[i]) days.push(i);
       }
       shop.openingTimes.push({
         days: days,
-        start: <string>ot.start.value,
-        end: <string>ot.end.value,
+        start: <string>ot.openingTimeForm.controls['start'].value,
+        end: <string>ot.openingTimeForm.controls['end'].value,
       });
     }
 
