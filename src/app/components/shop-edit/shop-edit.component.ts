@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
@@ -20,18 +20,19 @@ import { ShopOpeningTimeComponent } from '../shop-opening-time/shop-opening-time
 })
 export class ShopEditComponent extends AbstractComponent implements OnInit {
   private id: string;
-
-  shopName = new FormControl('', [
-    Validators.required,
-    Validators.minLength(4),
-  ]);
-  vacation = new FormControl(false);
+  shopForm!: FormGroup;
   openingTimes: ComponentRef<ShopOpeningTimeComponent>[] = [];
+  submitted = false;
 
   @ViewChild('container', { read: ViewContainerRef })
   container!: ViewContainerRef;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.shopForm = this.fb.group({
+      name: ['', Validators.pattern(/[\S]/)],
+      vacation: [false],
+    });
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -57,22 +58,34 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
         otc.openingTimeForm.controls['end'].setValue(ot.end);
         this.openingTimes.push(openingTimeComponentRef);
       }
-      this.shopName.setValue(data.name);
-      this.vacation.setValue(data.vacation);
+      this.shopForm.controls['name'].setValue(data.name);
+      this.shopForm.controls['vacation'].setValue(data.vacation);
+      this.shopForm = this.fb.group({
+        name: [data.name, Validators.pattern(/[\S]/)],
+        vacation: [data.vacation],
+      });
     });
   }
 
+  get ctrls() {
+    return this.shopForm.controls;
+  }
+
   submitForm() {
+    this.submitted = true;
     let error = false;
     for (let ot of this.openingTimes) {
       ot.instance.submitted = true;
       if (ot.instance.openingTimeForm.invalid) error = true;
-      if (ot.instance.openingTimeForm.controls['start'].errors) error = true;
     }
     if (error) return;
+    if (this.shopForm.invalid) return;
     let shop = new Shop();
-    shop.name = <string>this.shopName.value;
-    shop.vacation = this.vacation.value === null ? false : this.vacation.value;
+    shop.name = this.shopForm.controls['name'].value;
+    shop.vacation =
+      this.shopForm.controls['vacation'].value === null
+        ? false
+        : this.shopForm.controls['vacation'].value;
     shop.openingTimes = [];
     for (let x of this.openingTimes) {
       let ot = x.instance;
@@ -88,7 +101,7 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
     }
 
     this.shopService.UpdateShop(this.id, shop).subscribe({
-      next: (res) => {
+      next: () => {
         this.showSuccesAlert('/shops/edit');
       },
       error: (err) => {

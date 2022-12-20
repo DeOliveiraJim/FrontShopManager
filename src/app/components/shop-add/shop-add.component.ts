@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
@@ -19,17 +19,19 @@ import { ShopOpeningTimeComponent } from '../shop-opening-time/shop-opening-time
   styleUrls: ['./shop-add.component.css'],
 })
 export class ShopAddComponent extends AbstractComponent implements OnInit {
-  shopName = new FormControl('', [
-    Validators.required,
-    Validators.minLength(4),
-  ]);
-  vacation = new FormControl(false);
+  shopForm!: FormGroup;
   openingTimes: ComponentRef<ShopOpeningTimeComponent>[] = [];
+  submitted = false;
 
   @ViewChild('container', { read: ViewContainerRef })
   container!: ViewContainerRef;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.shopForm = this.fb.group({
+      name: ['', Validators.pattern(/[\S]/)],
+      vacation: [false],
+    });
+  }
 
   ngAfterViewInit() {
     // workaround moche pour éviter une erreur
@@ -45,17 +47,25 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
     super(ngZone, router);
   }
 
+  get ctrls() {
+    return this.shopForm.controls;
+  }
+
   submitForm() {
+    this.submitted = true;
     let error = false;
     for (let ot of this.openingTimes) {
       ot.instance.submitted = true;
       if (ot.instance.openingTimeForm.invalid) error = true;
-      if (ot.instance.openingTimeForm.controls['start'].errors) error = true;
     }
     if (error) return;
+    if (this.shopForm.invalid) return;
     let shop = new Shop();
-    shop.name = <string>this.shopName.value;
-    shop.vacation = this.vacation.value === null ? false : this.vacation.value;
+    shop.name = <string>this.shopForm.controls['name'].value;
+    shop.vacation =
+      this.shopForm.controls['vacation'].value === null
+        ? false
+        : this.shopForm.controls['vacation'].value;
     shop.openingTimes = [];
     for (let x of this.openingTimes) {
       let ot = x.instance;
