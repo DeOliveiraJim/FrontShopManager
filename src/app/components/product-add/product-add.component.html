@@ -6,22 +6,24 @@
             <form [formGroup]="productForm" (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom du produit</label>
-                    <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && ctrls['name'].errors }">
+                    <input type="text" formControlName="name" class="form-control" maxlength="255"
+                        [ngClass]="{ 'is-invalid': submitted && ctrls['name'].errors }">
                     <div *ngIf="submitted && ctrls['name'].errors" class="invalid-feedback">
-                        <div >Nom obligatoire </div>
+                        <div>Nom obligatoire</div>
                     </div>
                 </div>
 
                 <div class="form-group mb-2">
                     <label>Prix du produit</label>
-                    <input type="number" min="0" formControlName="price" class="form-control" [ngClass]="{ 'is-invalid': submitted && ctrls['price'].errors }">
+                    <input type="number" min="0" formControlName="price" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && ctrls['price'].errors }">
                     <div *ngIf="submitted && ctrls['price'].errors" class="invalid-feedback">
-                        <div >Prix obligatoire </div>
+                        <div>Prix obligatoire</div>
                     </div>
                 </div>
                 <div class="form-group mb-2">
                     <label>Description du produit</label>
-                    <input type="text" formControlName="description" class="form-control">
+                    <textarea formControlName="description" class="form-control" maxlength="65535"></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-3">Envoyer</button>

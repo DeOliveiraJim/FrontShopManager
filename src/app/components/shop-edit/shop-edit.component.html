@@ -3,10 +3,10 @@
         <!-- Form -->
         <div class="col-md-12">
             <h3>Modification d'une boutique</h3>
-            <form (ngSubmit)="submitForm()" novalidate>
+            <form (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom de la boutique</label>
-                    <input type="text" [formControl]="shopName" class="form-control" maxlength="30" required>
+                    <input type="text" [formControl]="shopName" class="form-control" maxlength="255" required>
                 </div>
                 <div class="form-group mb-2">
                     <label>Horaires de la boutique</label>
