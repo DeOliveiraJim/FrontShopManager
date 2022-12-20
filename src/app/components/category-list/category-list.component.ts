@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/shared/category';
+import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.css'],
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent extends AbstractComponent implements OnInit {
   categoryList: Category[] = [];
   pages: number = 1;
   orderName: string = '(croissant)';
@@ -17,7 +19,13 @@ export class CategoryListComponent implements OnInit {
   ngOnInit() {
     this.loadCategories();
   }
-  constructor(public categoryService: CategoryService) {}
+  constructor(
+    public categoryService: CategoryService,
+    public override ngZone: NgZone,
+    public override router: Router
+  ) {
+    super(ngZone, router);
+  }
   // categorys list
   loadCategories() {
     return this.categoryService.GetCategories().subscribe((data) => {
@@ -46,7 +54,9 @@ export class CategoryListComponent implements OnInit {
 
   research(categoryName: string) {
     this.categoryList = Array.from(this.searchList)
-      .filter((category: { name: string }) => category.name.includes(categoryName))
+      .filter((category: { name: string }) =>
+        category.name.includes(categoryName)
+      )
       .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
 
