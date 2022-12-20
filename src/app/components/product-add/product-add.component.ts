@@ -26,8 +26,8 @@ export class ProductAddComponent extends AbstractComponent implements OnInit {
   }
   addShop() {
     this.productForm = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', Validators.required],
+      name: ['', Validators.pattern(/[\S]/)],
+      price: [''],
       description: [''],
     });
   }

@@ -6,7 +6,7 @@
             <form [formGroup]="updateProductForm" (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom du produit</label>
-                    <input type="text" formControlName="name" class="form-control" maxlength="255"
+                    <input type="text" formControlName="name" class="form-control" maxlength="255" required
                         [ngClass]="{ 'is-invalid': submitted && ctrls['name'].errors }">
                     <div *ngIf="submitted && ctrls['name'].errors" class="invalid-feedback">
                         <div>Nom obligatoire</div>
@@ -15,7 +15,7 @@
 
                 <div class="form-group mb-2">
                     <label>Prix du produit</label>
-                    <input type="number" min="0" formControlName="price" class="form-control"
+                    <input type="number" min="0" formControlName="price" class="form-control" required
                         [ngClass]="{ 'is-invalid': submitted && ctrls['price'].errors }">
                     <div *ngIf="submitted && ctrls['price'].errors" class="invalid-feedback">
                         <div>Prix obligatoire</div>

@@ -15,12 +15,17 @@ export class CategoryAddComponent extends AbstractComponent implements OnInit {
   ngOnInit() {
     this.addCategory();
   }
-  constructor(public fb: FormBuilder, ngZone: NgZone, router: Router, public categoryService: CategoryService) {
+  constructor(
+    public fb: FormBuilder,
+    ngZone: NgZone,
+    router: Router,
+    public categoryService: CategoryService
+  ) {
     super(ngZone, router);
   }
   addCategory() {
     this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', Validators.pattern(/[\S]/)],
     });
   }
 
@@ -33,8 +38,10 @@ export class CategoryAddComponent extends AbstractComponent implements OnInit {
     if (this.categoryForm.invalid) {
       return;
     }
-    this.categoryService.CreateCategory(this.categoryForm.value).subscribe((res) => {
-      this.redirect('/categories');
-    });
+    this.categoryService
+      .CreateCategory(this.categoryForm.value)
+      .subscribe((res) => {
+        this.redirect('/categories');
+      });
   }
 }

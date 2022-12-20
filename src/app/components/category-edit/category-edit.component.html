@@ -6,7 +6,7 @@
             <form [formGroup]="updateCategoryForm" (ngSubmit)="submitForm()">
                 <div class="form-group mb-2">
                     <label>Nom de la catégorie</label>
-                    <input type="text" formControlName="name" class="form-control" maxlength="255"
+                    <input type="text" formControlName="name" class="form-control" maxlength="255" required
                         [ngClass]="{ 'is-invalid': submitted && ctrls['name'].errors }">
                     <div *ngIf="submitted && ctrls['name'].errors" class="invalid-feedback">
                         <div>Nom obligatoire</div>

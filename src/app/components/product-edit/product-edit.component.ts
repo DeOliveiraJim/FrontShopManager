@@ -36,7 +36,12 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm();
+    this.updateProductForm = this.fb.group({
+      name: ['', Validators.pattern(/[\S]/)],
+      price: [''],
+      description: [''],
+      categories: [''],
+    });
   }
 
   get ctrls() {
@@ -64,8 +69,8 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
     this.productService.GetProduct(this.idShop, this.idProduct).subscribe({
       next: (data) => {
         this.updateProductForm = this.fb.group({
-          name: [data.name, Validators.required],
-          price: [data.price, Validators.required],
+          name: [data.name, Validators.pattern(/[\S]/)],
+          price: [data.price],
           description: [data.description == null ? ' ' : data.description],
           categories: [
             this.allCategoriesList.filter(
@@ -81,15 +86,6 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
           'shops/edit/' + this.idShop + '/products/' + this.idProduct
         );
       },
-    });
-  }
-
-  updateForm() {
-    this.updateProductForm = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', Validators.required],
-      description: [''],
-      categories: [''],
     });
   }
 
