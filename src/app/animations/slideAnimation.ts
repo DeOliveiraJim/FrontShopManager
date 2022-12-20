@@ -8,11 +8,14 @@ import {
   trigger,
 } from '@angular/animations';
 
+const xIntensity = 50;
+const yIntensity = 27;
+
 const Direction = {
-  Left: [5, 0],
-  Right: [-5, 0],
-  Up: [0, 5],
-  Down: [0, -5],
+  Left: [xIntensity, 0],
+  Right: [-xIntensity, 0],
+  Up: [0, yIntensity],
+  Down: [0, -yIntensity],
 } as const;
 
 function slideTo(direction: keyof typeof Direction) {
@@ -31,9 +34,9 @@ function slideTo(direction: keyof typeof Direction) {
             transform:
               'translateX(' +
               Direction[direction][0] +
-              '%) translateY(' +
+              'px) translateY(' +
               Direction[direction][1] +
-              '%)',
+              'px)',
             opacity: '0',
           }),
           animate('0.25s ease-in-out', style({})),
@@ -49,9 +52,9 @@ function slideTo(direction: keyof typeof Direction) {
               transform:
                 'translateX(' +
                 -Direction[direction][0] +
-                '%) translateY(' +
+                'px) translateY(' +
                 -Direction[direction][1] +
-                '%)',
+                'px)',
               opacity: '0',
             })
           ),

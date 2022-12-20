@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import DAYS_LIST from './days';
 
@@ -24,10 +18,7 @@ export class ShopOpeningTimeComponent implements OnInit {
   start = new FormControl('');
   end = new FormControl('');
 
-  constructor(
-    private fb: FormBuilder,
-    private viewContainer: ViewContainerRef
-  ) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {}
 
