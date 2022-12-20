@@ -60,10 +60,6 @@ export class ShopEditComponent extends AbstractComponent implements OnInit {
       }
       this.shopForm.controls['name'].setValue(data.name);
       this.shopForm.controls['vacation'].setValue(data.vacation);
-      this.shopForm = this.fb.group({
-        name: [data.name, Validators.pattern(/[\S]/)],
-        vacation: [data.vacation],
-      });
     });
   }
 
