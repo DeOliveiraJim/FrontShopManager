@@ -40,7 +40,7 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
       name: ['', Validators.pattern(/[\S]/)],
       price: [''],
       description: [''],
-      categories: [''],
+      categories: [[]],
     });
   }
 
@@ -98,8 +98,7 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
       .UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value)
       .subscribe({
         next: () => {
-          var id = this.actRoute.snapshot.paramMap.get('id')!;
-          this.redirect('/shops/' + id + '/products');
+          this.redirect('/shops/' + this.idShop + '/products');
         },
         error: (err) => {
           this.showErrorAlert(
