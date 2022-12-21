@@ -22,13 +22,14 @@
           <button class="btn btn-primary float-end" type="button"
             [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
             produit</button>
-            <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
+          <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
             data-bs-toggle="dropdown" aria-expanded="false">
             Filtre
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button *ngFor="let category of categories" class="dropdown-item" type="button" (click)="filter(category)">{{category.name}}</button>
-          </div>        
+            <button *ngFor="let category of categories" class="dropdown-item" type="button"
+              (click)="filter(category)">{{category.name}}</button>
+          </div>
         </div>
 
         <table class="table">
@@ -50,9 +51,7 @@
               <td>{{product.description}}</td>
 
               <td>
-                <p *ngFor="let cat of product.categories">
-                  {{cat.name}}
-                </p>
+                {{catList(product)}}
               </td>
 
               <td>

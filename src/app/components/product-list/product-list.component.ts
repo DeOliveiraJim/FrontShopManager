@@ -98,7 +98,9 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
 
   researchProduct(productName: string) {
     this.productList = Array.from(this.searchList)
-      .filter((category: { name: string }) => category.name.includes(productName))
+      .filter((category: { name: string }) =>
+        category.name.includes(productName)
+      )
       .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
 
@@ -143,6 +145,19 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
 
   filter(category: Category) {
     this.productList = Array.from(this.searchList);
-    this.productList = this.productList.filter((product) => product.categories.find((c) => c.name == category.name));
+    this.productList = this.productList.filter((product) =>
+      product.categories.find((c) => c.name == category.name)
+    );
+  }
+
+  catList(p: Product) {
+    return p.categories
+      .map((x) => {
+        if (x.name.length > 50) {
+          return x.name.slice(0, 47) + '…';
+        }
+        return x.name;
+      })
+      .join(', ');
   }
 }
