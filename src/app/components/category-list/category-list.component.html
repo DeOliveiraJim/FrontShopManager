@@ -35,7 +35,7 @@
             <tr *ngFor="let category of categoryList | paginate: { itemsPerPage: 6, currentPage: pages }">
               <th scope="row">{{category.id}}</th>
               <td>{{category.name}}</td>
-              <td>
+              <td style="white-space: nowrap">
                 <button type="button" class="btn btn-success btn-sm me-1"
                   [routerLink]="['/categories/edit', category.id]">Edit</button>
                 <button type="button" class="btn btn-danger btn-sm me-1"

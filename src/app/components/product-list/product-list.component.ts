@@ -81,10 +81,6 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
     });
   }
 
-  redirectEditProduct(product: Product) {
-    this.redirect('shops/edit/' + this.idShop + '/products/edit/' + product.id);
-  }
-
   redirectAddProduct() {
     this.redirect('shops/' + this.idShop + '/products/add');
   }
