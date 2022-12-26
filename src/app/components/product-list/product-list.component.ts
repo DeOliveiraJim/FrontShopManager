@@ -13,6 +13,7 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   productList: Product[] = [];
   searchList: Product[] = [];
   categories: Set<string> = new Set();
+  filteredBy: string = '';
   pages: number = 1;
   idShop!: string;
   orderName: string = '(croissant)';
@@ -90,6 +91,7 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
 
   resetSearch() {
     this.productList = Array.from(this.searchList);
+    this.filteredBy = '';
   }
 
   sortData(sortingBy: string) {
@@ -128,6 +130,7 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   }
 
   filter(category: string) {
+    this.filteredBy = category;
     this.productList = Array.from(this.searchList);
     this.productList = this.productList.filter((product) =>
       product.categories.find((c) => c.name == category)

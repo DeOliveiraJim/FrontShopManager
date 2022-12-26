@@ -24,7 +24,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             <button *ngFor="let category of categories" class="dropdown-item" type="button"
-              (click)="filter(category)">{{category}}</button>
+              [ngClass]="{'active': filteredBy == category}" (click)="filter(category)">{{category}}</button>
           </div>
           <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Réinitialisation</button>
           <button class="btn btn-primary float-end" type="button"
