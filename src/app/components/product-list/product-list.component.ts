@@ -1,8 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
-import { Category } from 'src/app/shared/category';
 import { Product } from 'src/app/shared/product';
 import { AbstractComponent } from '../abstract/abstract.component';
 
@@ -14,7 +12,7 @@ import { AbstractComponent } from '../abstract/abstract.component';
 export class ProductListComponent extends AbstractComponent implements OnInit {
   productList: Product[] = [];
   searchList: Product[] = [];
-  categories: Category[] = [];
+  categories: Set<string> = new Set();
   pages: number = 1;
   idShop!: string;
   orderName: string = '(croissant)';
@@ -26,7 +24,6 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   constructor(
     public productService: ProductService,
     private actRoute: ActivatedRoute,
-    private categoryService: CategoryService,
     public override ngZone: NgZone,
     public override router: Router
   ) {
@@ -37,18 +34,6 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-    this.loadCategories();
-  }
-
-  loadCategories() {
-    return this.categoryService.GetCategories().subscribe({
-      next: (data) => {
-        this.categories.push(...data);
-      },
-      error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/');
-      },
-    });
   }
 
   // products list
@@ -56,6 +41,11 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
     return this.productService.GetProducts(this.idShop).subscribe({
       next: (data) => {
         this.productList.push(...data);
+        for (let p of data) {
+          for (let c of p.categories) {
+            this.categories.add(c.name);
+          }
+        }
         this.searchList = Array.from(this.productList);
       },
       error: (err) => {
@@ -94,9 +84,7 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
 
   researchProduct(productName: string) {
     this.productList = Array.from(this.searchList)
-      .filter((category: { name: string }) =>
-        category.name.includes(productName)
-      )
+      .filter((product) => product.name.includes(productName))
       .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
 
@@ -139,10 +127,10 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
     }
   }
 
-  filter(category: Category) {
+  filter(category: string) {
     this.productList = Array.from(this.searchList);
     this.productList = this.productList.filter((product) =>
-      product.categories.find((c) => c.name == category.name)
+      product.categories.find((c) => c.name == category)
     );
   }
 

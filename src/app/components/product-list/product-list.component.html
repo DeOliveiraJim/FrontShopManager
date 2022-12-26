@@ -18,18 +18,18 @@
             <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
             <button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button>
           </div>
-          <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Réinitialisation</button>
-          <button class="btn btn-primary float-end" type="button"
-            [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
-            produit</button>
           <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
             data-bs-toggle="dropdown" aria-expanded="false">
             Filtre
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             <button *ngFor="let category of categories" class="dropdown-item" type="button"
-              (click)="filter(category)">{{category.name}}</button>
+              (click)="filter(category)">{{category}}</button>
           </div>
+          <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Réinitialisation</button>
+          <button class="btn btn-primary float-end" type="button"
+            [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
+            produit</button>
         </div>
 
         <table class="table">
