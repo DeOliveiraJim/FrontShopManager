@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
-import { Product } from 'src/app/shared/product';
+import { Product, getAName } from 'src/app/shared/product';
 import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
@@ -56,13 +56,9 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   }
 
   // Delete shop
-  deleteProduct(data: { name: string; id: string }) {
-    var index = this.productList
-      .map((shop: { name: string }) => {
-        return shop.name;
-      })
-      .indexOf(data.name);
-    return this.productService.DeleteShop(this.idShop, data.id).subscribe({
+  deleteProduct(id: string) {
+    var index = this.productList.findIndex((p) => p.id === id);
+    return this.productService.DeleteShop(this.idShop, id).subscribe({
       next: () => {
         this.productList.splice(index, 1);
       },
@@ -84,9 +80,12 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   }
 
   researchProduct(productName: string) {
-    this.productList = Array.from(this.searchList)
-      .filter((product) => product.name.includes(productName))
-      .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
+    this.productList = Array.from(this.searchList).filter((product) => {
+      for (let d of product.details) {
+        if (d.name.includes(productName)) return true;
+      }
+      return false;
+    });
   }
 
   resetSearch() {
@@ -103,8 +102,8 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
       }
       this.sortNbName = -this.sortNbName;
 
-      this.productList.sort((a: { name: string }, b: { name: string }) => {
-        if (a.name < b.name) {
+      this.productList.sort((a, b) => {
+        if (getAName(a) < getAName(b)) {
           return -this.sortNbName;
         } else {
           return this.sortNbName;
@@ -146,5 +145,9 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
         return x.name;
       })
       .join(', ');
+  }
+
+  getAName(p: Product) {
+    return getAName(p);
   }
 }

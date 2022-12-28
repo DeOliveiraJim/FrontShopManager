@@ -38,7 +38,6 @@
               <th scope="col">#</th>
               <th scope="col">product</th>
               <th scope="col">Prix</th>
-              <th scope="col">Description</th>
               <th scope="col">Catégories</th>
               <th scope="col">Actions</th>
             </tr>
@@ -46,9 +45,8 @@
           <tbody>
             <tr *ngFor="let product of productList | paginate: { itemsPerPage: 10, currentPage: pages }">
               <th scope="row">{{product.id}}</th>
-              <td>{{product.name}}</td>
+              <td>{{getAName(product)}}</td>
               <td>{{product.price}}</td>
-              <td>{{product.description}}</td>
 
               <td>
                 {{catList(product)}}
@@ -58,7 +56,7 @@
                 <button type="button" class="btn btn-success btn-sm me-1"
                   [routerLink]="['/shops/edit', this.idShop, 'products', 'edit', product.id]">Edit</button>
                 <button type="button" class="btn btn-danger btn-sm me-1"
-                  (click)="deleteProduct(product)">Supprimer</button>
+                  (click)="deleteProduct(product.id)">Supprimer</button>
               </td>
             </tr>
           </tbody>
