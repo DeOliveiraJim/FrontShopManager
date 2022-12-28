@@ -44,7 +44,7 @@ export class ProductAddComponent extends AbstractComponent implements OnInit {
     var id = this.actRoute.snapshot.paramMap.get('id')!;
     this.productService.CreateProduct(id, this.productForm.value).subscribe({
       next: (data) => {
-        this.redirect('/shops/' + id + '/products');
+        this.showSuccesAlert('/shops/' + id + '/products');
       },
       error: (err) => {
         this.showErrorAlert(err, '/shops/' + id + '/products');
