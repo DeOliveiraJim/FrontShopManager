@@ -1,11 +1,4 @@
-import {
-  Component,
-  ComponentRef,
-  NgZone,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, ComponentRef, NgZone, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
@@ -63,9 +56,7 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
     let shop = new Shop();
     shop.name = <string>this.shopForm.controls['name'].value;
     shop.vacation =
-      this.shopForm.controls['vacation'].value === null
-        ? false
-        : this.shopForm.controls['vacation'].value;
+      this.shopForm.controls['vacation'].value === null ? false : this.shopForm.controls['vacation'].value;
     shop.openingTimes = [];
     for (let x of this.openingTimes) {
       let ot = x.instance;

@@ -40,6 +40,7 @@ import { ShopService } from './services/shop.service';
     ShopOpeningTimeComponent,
     FillDatabaseButtonComponent,
     ProductDetailFormComponent,
+    ShopOpeningTimeComponent,
   ],
   imports: [
     RouterModule,

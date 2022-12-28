@@ -17,21 +17,10 @@ export class ShopOpeningTimeComponent implements OnInit {
   submitted = false;
   @Output() closeItem = new EventEmitter();
 
-  daysList = [
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi',
-    'Dimanche',
-  ];
+  daysList = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
   openingTimeForm!: FormGroup;
-  daysForm = this.fb.array(
-    [false, false, false, false, false, false, false],
-    daysValidator()
-  );
+  daysForm = this.fb.array([false, false, false, false, false, false, false], daysValidator());
 
   constructor(private fb: FormBuilder) {
     this.openingTimeForm = this.fb.group({
@@ -54,8 +43,7 @@ export class ShopOpeningTimeComponent implements OnInit {
 
 function daysValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    if (!(control instanceof FormArray<FormControl<boolean | null>>))
-      return { error: 'wrong control' };
+    if (!(control instanceof FormArray<FormControl<boolean | null>>)) return { error: 'wrong control' };
 
     let isOneTrue = false;
     for (let x of control.controls) {
