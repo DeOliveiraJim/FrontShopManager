@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShopOpeningTimeComponent } from './shop-opening-time.component';
+import { ShopOpeningTimeComponent } from './shop-opening-time-form.component';
 
 describe('ShopOpeningTimeComponent', () => {
   let component: ShopOpeningTimeComponent;
@@ -8,9 +8,8 @@ describe('ShopOpeningTimeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShopOpeningTimeComponent ]
-    })
-    .compileComponents();
+      declarations: [ShopOpeningTimeComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ShopOpeningTimeComponent);
     component = fixture.componentInstance;

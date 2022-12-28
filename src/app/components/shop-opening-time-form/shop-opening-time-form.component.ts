@@ -9,9 +9,9 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 @Component({
-  selector: 'app-shop-opening-time',
-  templateUrl: './shop-opening-time.component.html',
-  styleUrls: ['./shop-opening-time.component.css'],
+  selector: 'app-shop-opening-time-form',
+  templateUrl: './shop-opening-time-form.component.html',
+  styleUrls: ['./shop-opening-time-form.component.css'],
 })
 export class ShopOpeningTimeComponent implements OnInit {
   submitted = false;

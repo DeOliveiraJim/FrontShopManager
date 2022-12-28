@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
 import { AbstractComponent } from '../abstract/abstract.component';
-import { ShopOpeningTimeComponent } from '../shop-opening-time/shop-opening-time.component';
+import { ShopOpeningTimeComponent } from '../shop-opening-time-form/shop-opening-time-form.component';
 
 @Component({
   selector: 'app-shop-edit',
