@@ -1,10 +1,18 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  ComponentRef,
+  NgZone,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Category } from 'src/app/shared/category';
 import { AbstractComponent } from '../abstract/abstract.component';
+import { ProductDetailFormComponent } from '../product-detail-form/product-detail-form.component';
 
 @Component({
   selector: 'app-product-edit',
@@ -13,11 +21,14 @@ import { AbstractComponent } from '../abstract/abstract.component';
 })
 export class ProductEditComponent extends AbstractComponent implements OnInit {
   allCategoriesList: Omit<Category, 'id'>[] = [];
-  updateProductForm!: FormGroup;
-  private idShop: string;
-  private idProduct: string;
+  productForm!: FormGroup;
+  idShop: string;
+  idProduct: string;
+  productDetails: ComponentRef<ProductDetailFormComponent>[] = [];
   submitted: boolean = false;
-  productForm: any;
+
+  @ViewChild('container', { read: ViewContainerRef })
+  container!: ViewContainerRef;
 
   constructor(
     private actRoute: ActivatedRoute,
@@ -32,15 +43,18 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
     this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
     this.idProduct = this.actRoute.snapshot.paramMap.get('idProduct')!;
     this.getCategories();
-    this.setFormWithProducts();
+    this.setFormWithProduct();
   }
 
   ngOnInit(): void {
-    this.updateForm();
+    this.productForm = this.fb.group({
+      price: [0],
+      categories: [[]],
+    });
   }
 
   get ctrls() {
-    return this.updateProductForm.controls;
+    return this.productForm.controls;
   }
 
   getCategories() {
@@ -52,54 +66,80 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
         this.allCategoriesList.push(...cat);
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+        this.showErrorAlert(
+          err,
+          'shops/edit/' + this.idShop + '/products/' + this.idProduct
+        );
       },
     });
   }
 
-  setFormWithProducts() {
+  setFormWithProduct() {
     this.productService.GetProduct(this.idShop, this.idProduct).subscribe({
       next: (data) => {
-        this.updateProductForm = this.fb.group({
-          name: [data.name, Validators.required],
-          price: [data.price, Validators.required],
-          description: [data.description == null ? ' ' : data.description],
-          categories: [
-            this.allCategoriesList.filter(
-              (c) =>
-                data.categories.find((sc) => sc.name == c.name) !== undefined
-            ),
-          ],
-        });
+        for (let d of data.details) {
+          let productDetailRef = this.container.createComponent(
+            ProductDetailFormComponent
+          );
+          let pdc = productDetailRef.instance;
+          pdc.productDetailForm.controls['name'].setValue(d.name);
+          pdc.productDetailForm.controls['description'].setValue(d.description);
+          pdc.productDetailForm.controls['lang'].setValue(d.lang);
+          this.productDetails.push(productDetailRef);
+        }
+        this.productForm.controls['price'].setValue(data.price);
+        this.productForm.controls['categories'].setValue(
+          this.allCategoriesList.filter(
+            (c) => data.categories.find((sc) => sc.name == c.name) !== undefined
+          )
+        );
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+        this.showErrorAlert(
+          err,
+          'shops/edit/' + this.idShop + '/products/' + this.idProduct
+        );
       },
     });
   }
 
-  updateForm() {
-    this.updateProductForm = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', Validators.required],
-      description: [''],
-      categories: [''],
-    });
-  }
   submitForm() {
     this.submitted = true;
-    if (this.updateProductForm.invalid) {
-      return;
+    let error = false;
+    for (let detail of this.productDetails) {
+      detail.instance.submitted = true;
+      if (detail.instance.productDetailForm.invalid) error = true;
     }
-    if (this.updateProductForm.value.description?.trim().length == 0) this.updateProductForm.value.description = null;
-    this.productService.UpdateProduct(this.idShop, this.idProduct, this.updateProductForm.value).subscribe({
-      next: (data) => {
-        var id = this.actRoute.snapshot.paramMap.get('id')!;
-        this.redirect('/shops/' + id + '/products');
-      },
-      error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
-      },
+    if (error) return;
+    if (this.productForm.invalid) return;
+    let product = this.productForm.value;
+    product.details = this.productDetails.map(
+      (x) => x.instance.productDetailForm.value
+    );
+    this.productService
+      .UpdateProduct(this.idShop, this.idProduct, product)
+      .subscribe({
+        next: () => {
+          this.redirect('/shops/' + this.idShop + '/products');
+        },
+        error: (err) => {
+          this.showErrorAlert(
+            err,
+            'shops/edit/' + this.idShop + '/products/' + this.idProduct
+          );
+        },
+      });
+  }
+
+  addProductDetail() {
+    let c = this.container.createComponent(ProductDetailFormComponent);
+    c.instance.closeItem.subscribe(() => {
+      let i = this.productDetails.findIndex((x) => x == c);
+      if (i !== -1) {
+        this.productDetails.splice(i);
+      }
+      c.destroy();
     });
+    this.productDetails.push(c);
   }
 }

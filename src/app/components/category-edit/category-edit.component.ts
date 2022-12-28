@@ -11,7 +11,6 @@ import { AbstractComponent } from '../abstract/abstract.component';
 })
 export class CategoryEditComponent extends AbstractComponent implements OnInit {
   updateCategoryForm!: FormGroup;
-
   submitted = false;
 
   ngOnInit() {
@@ -29,7 +28,7 @@ export class CategoryEditComponent extends AbstractComponent implements OnInit {
     this.categoryService.GetCategory(id).subscribe({
       next: (data) => {
         this.updateCategoryForm = this.fb.group({
-          name: [data.name, Validators.required],
+          name: [data.name, Validators.pattern(/[\S]/)],
         });
       },
       error: (err) => {
@@ -39,7 +38,7 @@ export class CategoryEditComponent extends AbstractComponent implements OnInit {
   }
   updateForm() {
     this.updateCategoryForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', Validators.pattern(/[\S]/)],
     });
   }
 
@@ -53,8 +52,10 @@ export class CategoryEditComponent extends AbstractComponent implements OnInit {
       return;
     }
     var id = this.actRoute.snapshot.paramMap.get('id')!;
-    this.categoryService.UpdateCategory(id, this.updateCategoryForm.value).subscribe(() => {
-      this.redirect('/categories');
-    });
+    this.categoryService
+      .UpdateCategory(id, this.updateCategoryForm.value)
+      .subscribe(() => {
+        this.redirect('/categories');
+      });
   }
 }

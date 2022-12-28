@@ -20,7 +20,7 @@ export class CategoryAddComponent extends AbstractComponent implements OnInit {
   }
   addCategory() {
     this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', Validators.pattern(/[\S]/)],
     });
   }
 

@@ -2,7 +2,7 @@ export class Shop {
   id!: number;
   name!: string;
   openingTimes!: {
-    days: (string | number)[];
+    days: number[];
     start: string;
     end: string;
   }[];

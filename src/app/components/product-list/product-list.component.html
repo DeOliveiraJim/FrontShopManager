@@ -18,17 +18,18 @@
             <button class="dropdown-item" type="button" (click)="sortData('Nom')">Nom {{orderName}}</button>
             <button class="dropdown-item" type="button" (click)="sortData('Prix')">Prix {{orderPrice}}</button>
           </div>
-          <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Réinitialisation</button>
-          <button class="btn btn-primary float-end" type="button"
-            [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
-            produit</button>
-            <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
+          <button class="btn btn-secondary dropdown-toggle me-1" type="button" id="dropdownMenu2"
             data-bs-toggle="dropdown" aria-expanded="false">
             Filtre
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button *ngFor="let category of categories" class="dropdown-item" type="button" (click)="filter(category)">{{category.name}}</button>
-          </div>        
+            <button *ngFor="let category of categories" class="dropdown-item" type="button"
+              [ngClass]="{'active': filteredBy == category}" (click)="filter(category)">{{category}}</button>
+          </div>
+          <button type="button" class="btn btn-danger me-1" (click)="resetSearch()">Réinitialisation</button>
+          <button class="btn btn-primary float-end" type="button"
+            [routerLink]="'/shops/' + idShop + '/products/add'">Ajout d'un
+            produit</button>
         </div>
 
         <table class="table">
@@ -37,7 +38,6 @@
               <th scope="col">#</th>
               <th scope="col">product</th>
               <th scope="col">Prix</th>
-              <th scope="col">Description</th>
               <th scope="col">Catégories</th>
               <th scope="col">Actions</th>
             </tr>
@@ -45,21 +45,18 @@
           <tbody>
             <tr *ngFor="let product of productList | paginate: { itemsPerPage: 10, currentPage: pages }">
               <th scope="row">{{product.id}}</th>
-              <td>{{product.name}}</td>
+              <td>{{getAName(product)}}</td>
               <td>{{product.price}}</td>
-              <td>{{product.description}}</td>
 
               <td>
-                <p *ngFor="let cat of product.categories">
-                  {{cat.name}}
-                </p>
+                {{catList(product)}}
               </td>
 
-              <td>
+              <td style="white-space: nowrap">
                 <button type="button" class="btn btn-success btn-sm me-1"
-                  (click)="redirectEditProduct(product)">Edit</button>
+                  [routerLink]="['/shops/edit', this.idShop, 'products', 'edit', product.id]">Edit</button>
                 <button type="button" class="btn btn-danger btn-sm me-1"
-                  (click)="deleteProduct(product)">Supprimer</button>
+                  (click)="deleteProduct(product.id)">Supprimer</button>
               </td>
             </tr>
           </tbody>
