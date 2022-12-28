@@ -33,8 +33,13 @@ export class CategoryAddComponent extends AbstractComponent implements OnInit {
     if (this.categoryForm.invalid) {
       return;
     }
-    this.categoryService.CreateCategory(this.categoryForm.value).subscribe((res) => {
-      this.redirect('/categories');
+    this.categoryService.CreateCategory(this.categoryForm.value).subscribe({
+      next: (shops) => {
+        this.showSuccesAlert('/categories');
+      },
+      error: (err) => {
+        this.showErrorAlert(err, '/categories/add');
+      },
     });
   }
 }

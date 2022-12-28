@@ -1,11 +1,4 @@
-import {
-  Component,
-  ComponentRef,
-  NgZone,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, ComponentRef, NgZone, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
@@ -19,10 +12,7 @@ import { ShopOpeningTimeComponent } from '../shop-opening-time/shop-opening-time
   styleUrls: ['./shop-add.component.css'],
 })
 export class ShopAddComponent extends AbstractComponent implements OnInit {
-  shopName = new FormControl('', [
-    Validators.required,
-    Validators.minLength(4),
-  ]);
+  shopName = new FormControl('', [Validators.required, Validators.minLength(4)]);
   vacation = new FormControl(false);
   openingTimes: ComponentRef<ShopOpeningTimeComponent>[] = [];
 
@@ -32,7 +22,6 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    // workaround moche pour éviter une erreur
     setTimeout(() => this.addOpeningTime(), 0);
   }
 
@@ -65,7 +54,7 @@ export class ShopAddComponent extends AbstractComponent implements OnInit {
 
     this.shopService.CreateShop(shop).subscribe({
       next: (res) => {
-        this.showSuccesAlert('/shops/add');
+        this.showSuccesAlert('/shops');
       },
       error: (err) => {
         this.showErrorAlert(err, '/shops/add');
