@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -42,9 +42,9 @@ export abstract class AbstractComponent {
       cancelButtonText: 'Rester',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.ngZone.run(() => this.router.navigateByUrl(route));
-      } else if (result.isDismissed) {
         this.ngZone.run(() => this.router.navigateByUrl('/'));
+      } else if (result.isDismissed) {
+        this.ngZone.run(() => this.router.navigateByUrl(route));
       }
     });
   }

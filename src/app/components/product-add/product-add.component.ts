@@ -91,7 +91,7 @@ export class ProductAddComponent extends AbstractComponent implements OnInit {
         this.redirect('/shops/' + this.idShop + '/products');
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/' + this.idShop + '/products');
+        this.showErrorAlert(err, 'shops/' + this.idShop + '/products/add');
       },
     });
   }
