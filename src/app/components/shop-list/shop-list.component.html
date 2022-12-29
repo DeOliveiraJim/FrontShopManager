@@ -69,7 +69,7 @@
             <tr *ngFor="let shop of shopList | paginate: { itemsPerPage: 5, currentPage: pages }">
               <th scope="row">{{shop.id}}</th>
               <td>{{shop.name}}</td>
-              <td>{{shop.openingTimes}}</td>
+              <td><span *ngFor="let ot of formatOpeningTimes(shop)">{{ot}}<br /></span></td>
               <td *ngIf="shop.vacation">Oui</td>
               <td *ngIf="!shop.vacation">Non</td>
               <td>{{shop.creationDate.toLocaleString(undefined, { year: 'numeric', month: 'numeric',

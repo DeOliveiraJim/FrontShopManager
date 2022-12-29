@@ -2,6 +2,7 @@ import { Component, Injectable, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
+import { Util } from 'src/app/shared/util';
 import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
@@ -28,7 +29,11 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
   ngOnInit() {
     this.loadShops();
   }
-  constructor(public shopService: ShopService, public override ngZone: NgZone, public override router: Router) {
+  constructor(
+    public shopService: ShopService,
+    public override ngZone: NgZone,
+    public override router: Router
+  ) {
     super(ngZone, router);
   }
   // shops list
@@ -67,26 +72,42 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
   }
 
   researchShop(shopName: string) {
-    var dateAfter = new Date((<HTMLInputElement>document.getElementById('dateAfterSearch')).value);
+    var dateAfter = new Date(
+      (<HTMLInputElement>document.getElementById('dateAfterSearch')).value
+    );
 
-    var dateBefore = new Date((<HTMLInputElement>document.getElementById('dateBeforeSearch')).value);
+    var dateBefore = new Date(
+      (<HTMLInputElement>document.getElementById('dateBeforeSearch')).value
+    );
 
-    var dateBetween1 = new Date((<HTMLInputElement>document.getElementById('dateBetweenSearch1')).value);
+    var dateBetween1 = new Date(
+      (<HTMLInputElement>document.getElementById('dateBetweenSearch1')).value
+    );
 
-    var dateBetween2 = new Date((<HTMLInputElement>document.getElementById('dateBetweenSearch2')).value);
+    var dateBetween2 = new Date(
+      (<HTMLInputElement>document.getElementById('dateBetweenSearch2')).value
+    );
 
-    this.searchByConge = <'null' | 'true' | 'false'>(<HTMLSelectElement>document.getElementById('congeSearch')).value;
+    this.searchByConge = <'null' | 'true' | 'false'>(
+      (<HTMLSelectElement>document.getElementById('congeSearch')).value
+    );
 
     this.shopList = Array.from(this.searchList)
       .filter((shop: { name: string; vacation: boolean; creationDate: Date }) =>
         shop.name.includes(shopName) && this.searchByConge !== 'null'
           ? shop.vacation === (this.searchByConge === 'false' ? false : true)
           : true &&
-            (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
-            (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
-            (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
+            (dateAfter.toString().length == 12
               ? true
-              : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2)
+              : shop.creationDate > dateAfter) &&
+            (dateBefore.toString().length == 12
+              ? true
+              : shop.creationDate < dateBefore) &&
+            (dateBetween1.toString().length == 12 &&
+            dateBetween2.toString().length == 12
+              ? true
+              : shop.creationDate > dateBetween1 &&
+                shop.creationDate < dateBetween2)
       )
       .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
@@ -145,5 +166,9 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
         }
       });
     }
+  }
+
+  formatOpeningTimes(s: Shop) {
+    return Util.formatOpeningTimes(s);
   }
 }
