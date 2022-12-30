@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { CategoryAddComponent } from './components/category-add/category-add.component';
 import { CategoryEditComponent } from './components/category-edit/category-edit.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
-import { FillDatabaseButtonComponent } from './components/fill-database-button/fill-database-button.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { ProductAddComponent } from './components/product-add/product-add.component';
 import { ProductDetailFormComponent } from './components/product-detail-form/product-detail-form.component';
@@ -38,7 +37,6 @@ import { ShopService } from './services/shop.service';
     CategoryListComponent,
     CategoryEditComponent,
     ShopOpeningTimeComponent,
-    FillDatabaseButtonComponent,
     ProductDetailFormComponent,
     ShopOpeningTimeComponent,
   ],
