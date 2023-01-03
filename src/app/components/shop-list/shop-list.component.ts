@@ -78,15 +78,17 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
     this.searchByConge = <'null' | 'true' | 'false'>(<HTMLSelectElement>document.getElementById('congeSearch')).value;
 
     this.shopList = Array.from(this.searchList)
-      .filter((shop: { name: string; vacation: boolean; creationDate: Date }) =>
-        shop.name.includes(shopName) && this.searchByConge !== 'null'
-          ? shop.vacation === (this.searchByConge === 'false' ? false : true)
-          : true &&
-            (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
-            (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
-            (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
-              ? true
-              : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2)
+      .filter(
+        (shop: { name: string; vacation: boolean; creationDate: Date }) =>
+          (shopName.length == 0 ? true : shop.name.includes(shopName)) &&
+          (this.searchByConge !== 'null'
+            ? shop.vacation === (this.searchByConge === 'false' ? false : true)
+            : true &&
+              (dateAfter.toString().length == 12 ? true : shop.creationDate > dateAfter) &&
+              (dateBefore.toString().length == 12 ? true : shop.creationDate < dateBefore) &&
+              (dateBetween1.toString().length == 12 && dateBetween2.toString().length == 12
+                ? true
+                : shop.creationDate > dateBetween1 && shop.creationDate < dateBetween2))
       )
       .sort((a, b) => (a.name.length < b.name.length ? -1 : 1));
   }
