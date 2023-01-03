@@ -1,10 +1,18 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  ComponentRef,
+  NgZone,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Category } from 'src/app/shared/category';
 import { AbstractComponent } from '../abstract/abstract.component';
+import { ProductDetailFormComponent } from '../product-detail-form/product-detail-form.component';
 
 @Component({
   selector: 'app-product-add',
@@ -14,31 +22,37 @@ import { AbstractComponent } from '../abstract/abstract.component';
 export class ProductAddComponent extends AbstractComponent implements OnInit {
   allCategoriesList: Omit<Category, 'id'>[] = [];
   productForm!: FormGroup;
-  private idShop: string;
-  private idProduct: string;
-  submitted = false;
+  idShop: string;
+  productDetails: ComponentRef<ProductDetailFormComponent>[] = [];
+  submitted: boolean = false;
 
-  ngOnInit() {
+  @ViewChild('container', { read: ViewContainerRef })
+  container!: ViewContainerRef;
+
+  constructor(
+    private actRoute: ActivatedRoute,
+    public productService: ProductService,
+    public fb: FormBuilder,
+    public categoryService: CategoryService,
+    public override ngZone: NgZone,
+    public override router: Router
+  ) {
+    super(ngZone, router);
+
+    this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
+    this.getCategories();
+  }
+
+  ngOnInit(): void {
     this.productForm = this.fb.group({
-      name: ['', Validators.pattern(/[\S]/)],
-      price: [''],
-      description: [''],
+      price: [0],
       categories: [[]],
     });
   }
 
-  constructor(
-    private actRoute: ActivatedRoute,
-    public fb: FormBuilder,
-    ngZone: NgZone,
-    router: Router,
-    public productService: ProductService,
-    public categoryService: CategoryService
-  ) {
-    super(ngZone, router);
-    this.idShop = this.actRoute.snapshot.paramMap.get('id')!;
-    this.idProduct = this.actRoute.snapshot.paramMap.get('idProduct')!;
-    this.getCategories();
+  ngAfterViewInit() {
+    // workaround moche pour éviter une erreur
+    setTimeout(() => this.addProductDetail(), 0);
   }
 
   get ctrls() {
@@ -54,23 +68,43 @@ export class ProductAddComponent extends AbstractComponent implements OnInit {
         this.allCategoriesList.push(...cat);
       },
       error: (err) => {
-        this.showErrorAlert(err, 'shops/edit/' + this.idShop + '/products/' + this.idProduct);
+        this.showErrorAlert(err, 'shops/' + this.idShop + '/products');
       },
     });
   }
 
   submitForm() {
     this.submitted = true;
-    if (this.productForm.invalid) {
-      return;
+    let error = false;
+    for (let detail of this.productDetails) {
+      detail.instance.submitted = true;
+      if (detail.instance.productDetailForm.invalid) error = true;
     }
-    this.productService.CreateProduct(this.idShop, this.productForm.value).subscribe({
+    if (error) return;
+    if (this.productForm.invalid) return;
+    let product = this.productForm.value;
+    product.details = this.productDetails.map(
+      (x) => x.instance.productDetailForm.value
+    );
+    this.productService.CreateProduct(this.idShop, product).subscribe({
       next: () => {
         this.redirect('/shops/' + this.idShop + '/products');
       },
       error: (err) => {
-        this.showErrorAlert(err, '/shops/' + this.idShop + '/products');
+        this.showErrorAlert(err, 'shops/' + this.idShop + '/products/add');
       },
     });
+  }
+
+  addProductDetail() {
+    let c = this.container.createComponent(ProductDetailFormComponent);
+    c.instance.closeItem.subscribe(() => {
+      let i = this.productDetails.findIndex((x) => x == c);
+      if (i !== -1) {
+        this.productDetails.splice(i);
+      }
+      c.destroy();
+    });
+    this.productDetails.push(c);
   }
 }

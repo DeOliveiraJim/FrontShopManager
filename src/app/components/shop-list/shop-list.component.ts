@@ -2,6 +2,7 @@ import { Component, Injectable, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Shop } from 'src/app/shared/shop';
+import { Util } from 'src/app/shared/util';
 import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
@@ -147,5 +148,9 @@ export class ShopListComponent extends AbstractComponent implements OnInit {
         }
       });
     }
+  }
+
+  formatOpeningTimes(s: Shop) {
+    return Util.formatOpeningTimes(s);
   }
 }

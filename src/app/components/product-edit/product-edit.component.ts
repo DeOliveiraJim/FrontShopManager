@@ -68,7 +68,7 @@ export class ProductEditComponent extends AbstractComponent implements OnInit {
       error: (err) => {
         this.showErrorAlert(
           err,
-          'shops/edit/' + this.idShop + '/products/' + this.idProduct
+          'shops/' + this.idShop + '/products/edit/' + this.idProduct
         );
       },
     });

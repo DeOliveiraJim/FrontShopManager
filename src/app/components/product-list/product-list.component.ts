@@ -1,7 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
-import { Product, getAName } from 'src/app/shared/product';
+import { Product } from 'src/app/shared/product';
+import { Util } from 'src/app/shared/util';
 import { AbstractComponent } from '../abstract/abstract.component';
 
 @Component({
@@ -103,7 +104,7 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
       this.sortNbName = -this.sortNbName;
 
       this.productList.sort((a, b) => {
-        if (getAName(a) < getAName(b)) {
+        if (Util.getAName(a) < Util.getAName(b)) {
           return -this.sortNbName;
         } else {
           return this.sortNbName;
@@ -148,6 +149,6 @@ export class ProductListComponent extends AbstractComponent implements OnInit {
   }
 
   getAName(p: Product) {
-    return getAName(p);
+    return Util.getAName(p);
   }
 }

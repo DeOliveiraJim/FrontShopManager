@@ -33,7 +33,7 @@ const routes: Routes = [
     data: { animation: { x: 0, y: 1 } },
   },
   {
-    path: 'shops/edit/:id/products/edit/:idProduct',
+    path: 'shops/:id/products/edit/:idProduct',
     component: ProductEditComponent,
     data: { animation: { x: 0, y: 2 } },
   },

@@ -3,10 +3,14 @@
         <button type="button" class="closeButton btn-close" (click)="onClose()"></button>
         <div class="form-group col">
             <label>Langue</label>
-            <select type="text" class="form-control" formControlName="lang">
+            <select type="text" class="form-control" formControlName="lang" required
+                [ngClass]="{'is-invalid': submitted && ctrls['lang'].errors}">
                 <option *ngFor="let c of langageCodes" value="{{c}}">{{getLanguageName(c)}}
                 </option>
             </select>
+            <div *ngIf="submitted && ctrls['lang'].errors" class="invalid-feedback">
+                <div>Langue obligatoire</div>
+            </div>
         </div>
         <div class="col">
             <label>Nom</label>
